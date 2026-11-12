@@ -1,0 +1,1944 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="canonical" href="https://bssoptimizer.github.io/blue-hive-optimizer/">
+<link rel="icon" type="image/png" href="/logo.png">
+<meta property="og:title" content="Bee Swarm Simulator Blue Hive Optimizer">
+<meta property="og:description" content="Optimize your Blue Hive build in Bee Swarm Simulator.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://bssoptimizer.github.io/blue-hive-optimizer/">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-0EQ60MCZPB"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-0EQ60MCZPB');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BSS Blue Hive Optimizer – Bee Swarm Simulator Hive Advisor</title>
+<meta name="description" content="Free BSS Blue Hive Optimizer for Bee Swarm Simulator. Get personalized, stage-specific advice to maximize your blue hive honey production.">
+<meta name="keywords" content="Bee Swarm Simulator, Blue Hive, Bee Swarm Optimizer, Bee Swarm Blue Hive Optimizer, Roblox Bee Swarm">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-deep: #0a0e1a;
+    --bg-card: #0f1525;
+    --bg-card2: #151d35;
+    --accent-blue: #4a9eff;
+    --accent-blue2: #2d7dd6;
+    --accent-gold: #f5c842;
+    --accent-teal: #38d9c0;
+    --accent-red: #ff4d6d;
+    --text-primary: #e8edf8;
+    --text-muted: #7a8ab0;
+    --text-dim: #4a5580;
+    --border: rgba(74,158,255,0.15);
+    --border-bright: rgba(74,158,255,0.35);
+    --common: #a07040;
+    --rare: #cccccc;
+    --epic: #f0c000;
+    --legendary: #44cccc;
+    --mythic: #b06ee0;
+    --event: #88ff88;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg-deep);
+    color: var(--text-primary);
+    font-family: 'Outfit', sans-serif;
+    font-weight: 400;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background:
+      radial-gradient(ellipse 80% 50% at 20% 10%, rgba(74,158,255,0.06) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 40% at 80% 80%, rgba(56,217,192,0.04) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 20px 60px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* HEADER */
+  header {
+    text-align: center;
+    padding: 48px 0 32px;
+    animation: fadeDown 0.6s ease;
+  }
+  .header-badge {
+    display: inline-block;
+    background: rgba(74,158,255,0.12);
+    border: 1px solid var(--border-bright);
+    color: var(--accent-blue);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    border-radius: 20px;
+    margin-bottom: 16px;
+  }
+  header h1 {
+    font-size: clamp(28px, 5vw, 42px);
+    font-weight: 800;
+    line-height: 1.1;
+    background: linear-gradient(135deg, #e8edf8 0%, var(--accent-blue) 50%, var(--accent-teal) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 12px;
+  }
+  header p {
+    color: var(--text-muted);
+    font-size: 16px;
+    max-width: 520px;
+    margin: 0 auto;
+  }
+
+  /* PROGRESS BAR */
+  .progress-wrap {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 16px 20px;
+    margin-bottom: 24px;
+    animation: fadeUp 0.5s ease 0.1s both;
+  }
+  .progress-steps {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .step-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    flex: 1;
+    transition: opacity 0.2s;
+  }
+  .step-item:hover .step-dot { border-color: var(--accent-blue); }
+  .step-dot {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    border: 2px solid var(--text-dim);
+    background: var(--bg-deep);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 700; font-family: 'Space Mono', monospace;
+    color: var(--text-dim);
+    transition: all 0.3s;
+  }
+  .step-dot.active { border-color: var(--accent-blue); background: rgba(74,158,255,0.15); color: var(--accent-blue); }
+  .step-dot.done { border-color: var(--accent-teal); background: rgba(56,217,192,0.15); color: var(--accent-teal); }
+  .step-label { font-size: 11px; color: var(--text-dim); text-align: center; white-space: nowrap; }
+  .step-label.active { color: var(--accent-blue); }
+  .step-label.done { color: var(--accent-teal); }
+  .step-line {
+    flex: 1; height: 2px; background: var(--text-dim); border-radius: 2px;
+    max-width: 40px; transition: background 0.3s;
+  }
+  .step-line.done { background: var(--accent-teal); }
+
+  .progress-track {
+    height: 3px; background: var(--bg-deep); border-radius: 2px; margin-top: 12px; overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%; background: linear-gradient(90deg, var(--accent-blue), var(--accent-teal));
+    border-radius: 2px; transition: width 0.4s ease;
+  }
+
+  /* CARDS */
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px;
+    margin-bottom: 16px;
+    display: none;
+    animation: fadeUp 0.4s ease;
+  }
+  .card.visible { display: block; }
+  .card-title {
+    font-size: 20px; font-weight: 700; margin-bottom: 6px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .card-title .step-num {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 28px; height: 28px; border-radius: 50%;
+    background: rgba(74,158,255,0.15); border: 1px solid var(--border-bright);
+    font-size: 13px; font-weight: 700; font-family: 'Space Mono', monospace;
+    color: var(--accent-blue);
+  }
+  .card-subtitle { color: var(--text-muted); font-size: 14px; margin-bottom: 24px; }
+
+  /* FORM FIELDS */
+  .field-group { margin-bottom: 20px; }
+  .field-label { font-size: 14px; font-weight: 600; color: var(--text-primary); margin-bottom: 8px; display: block; }
+  .field-row { display: flex; gap: 16px; flex-wrap: wrap; }
+  .field-row .field-group { flex: 1; min-width: 140px; }
+
+  input[type="number"] {
+    width: 100%; background: var(--bg-deep); border: 1px solid var(--border);
+    border-radius: 8px; padding: 10px 14px; color: var(--text-primary);
+    font-family: 'Space Mono', monospace; font-size: 14px;
+    transition: border-color 0.2s;
+    -moz-appearance: textfield;
+  }
+  input[type="number"]::-webkit-outer-spin-button,
+  input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; }
+  input[type="number"]:focus { outline: none; border-color: var(--accent-blue); }
+
+  /* TOGGLE BUTTONS */
+  .toggle-group { display: flex; gap: 8px; flex-wrap: wrap; }
+  .toggle-btn {
+    padding: 8px 18px; border-radius: 8px; border: 1px solid var(--border);
+    background: var(--bg-deep); color: var(--text-muted); font-family: 'Outfit', sans-serif;
+    font-size: 14px; font-weight: 500; cursor: pointer; transition: all 0.2s;
+  }
+  .toggle-btn:hover { border-color: var(--accent-blue); color: var(--text-primary); }
+  .toggle-btn.active { border-color: var(--accent-blue); background: rgba(74,158,255,0.15); color: var(--accent-blue); }
+  .toggle-btn.active-yes { border-color: #4caf50; background: rgba(76,175,80,0.15); color: #6dcc71; }
+  .toggle-btn.active-no { border-color: #ef5350; background: rgba(239,83,80,0.12); color: #f57575; }
+
+  /* NAV BUTTONS */
+  .nav-row { display: flex; justify-content: space-between; align-items: center; margin-top: 28px; }
+  .btn-back {
+    padding: 10px 22px; border-radius: 8px; border: 1px solid var(--border);
+    background: transparent; color: var(--text-muted); font-family: 'Outfit', sans-serif;
+    font-size: 14px; font-weight: 500; cursor: pointer; transition: all 0.2s;
+  }
+  .btn-back:hover { border-color: var(--accent-blue); color: var(--text-primary); }
+  .btn-next {
+    padding: 10px 28px; border-radius: 8px; border: none;
+    background: linear-gradient(135deg, var(--accent-blue2), var(--accent-blue));
+    color: white; font-family: 'Outfit', sans-serif; font-size: 14px; font-weight: 600;
+    cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 16px rgba(74,158,255,0.25);
+  }
+  .btn-next:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(74,158,255,0.35); }
+  .btn-analyze {
+    padding: 14px 40px; border-radius: 10px; border: none;
+    background: linear-gradient(135deg, #d4a017, var(--accent-gold), #f8d860);
+    color: #1a1000; font-family: 'Outfit', sans-serif; font-size: 16px; font-weight: 700;
+    cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 20px rgba(245,200,66,0.3);
+    display: block; margin: 28px auto 0;
+  }
+  .btn-analyze:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(245,200,66,0.45); }
+
+  /* BEE INPUTS */
+  .rarity-section { margin-bottom: 20px; border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+  .rarity-header {
+    padding: 10px 16px; cursor: pointer; display: flex; justify-content: space-between;
+    align-items: center; background: var(--bg-card2); user-select: none;
+    transition: background 0.2s;
+  }
+  .rarity-header:hover { background: rgba(74,158,255,0.08); }
+  .rarity-label { font-size: 13px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
+  .rarity-arrow { transition: transform 0.3s; font-size: 12px; color: var(--text-muted); }
+  .rarity-section.collapsed .rarity-arrow { transform: rotate(-90deg); }
+  .rarity-body { padding: 8px 12px; }
+  .rarity-section.collapsed .rarity-body { display: none; }
+
+  .bee-col-headers {
+    display: grid; grid-template-columns: 1fr 110px 110px;
+    gap: 8px; padding: 4px 6px 8px; border-bottom: 1px solid var(--border);
+    margin-bottom: 4px;
+  }
+  .bee-col-headers span { font-size: 11px; color: var(--text-dim); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+  .bee-col-headers span:nth-child(2), .bee-col-headers span:nth-child(3) { text-align: center; }
+
+  .bee-row {
+    display: grid; grid-template-columns: 1fr 110px 110px;
+    gap: 8px; align-items: center; padding: 5px 6px;
+    border-radius: 6px; transition: background 0.2s;
+  }
+  .bee-row.has-bees { background: rgba(74,158,255,0.06); }
+  .bee-name { font-size: 13px; font-weight: 500; }
+
+  /* Stepper input widget */
+  .stepper-wrap {
+    display: flex; align-items: center; gap: 0;
+    background: var(--bg-deep); border: 1px solid var(--border);
+    border-radius: 8px; overflow: hidden;
+  }
+  .stepper-wrap:focus-within { border-color: var(--accent-blue); }
+  .stepper-btn {
+    background: var(--bg-card2); border: none; color: var(--text-muted);
+    cursor: pointer; font-size: 14px; font-weight: 700;
+    width: 26px; min-width: 26px; height: 30px;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.15s, color 0.15s;
+    user-select: none; flex-shrink: 0;
+  }
+  .stepper-btn:hover { background: rgba(74,158,255,0.18); color: var(--accent-blue); }
+  .stepper-btn:active { background: rgba(74,158,255,0.3); }
+  .stepper-input {
+    flex: 1; min-width: 0; background: transparent; border: none;
+    color: var(--text-primary); font-family: 'Space Mono', monospace;
+    font-size: 12px; text-align: center; padding: 4px 2px;
+    -moz-appearance: textfield;
+  }
+  .stepper-input::-webkit-outer-spin-button,
+  .stepper-input::-webkit-inner-spin-button { -webkit-appearance: none; }
+  .stepper-input:focus { outline: none; }
+
+  /* Bee total counter */
+  .bee-total-bar {
+    margin-top: 12px; padding: 10px 14px;
+    background: var(--bg-card2); border: 1px solid var(--border);
+    border-radius: 8px; display: flex; align-items: center; justify-content: space-between;
+    font-size: 13px; color: var(--text-muted);
+  }
+  .bee-total-bar strong { color: var(--accent-teal); font-family: 'Space Mono', monospace; }
+
+  /* SSA */
+  .passive-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+  .passive-btn {
+    padding: 7px 14px; border-radius: 8px; border: 1px solid var(--border);
+    background: var(--bg-deep); color: var(--text-muted); font-family: 'Outfit', sans-serif;
+    font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.2s;
+  }
+  .passive-btn:hover:not(.passive-disabled) { border-color: var(--accent-blue); color: var(--text-primary); }
+  .passive-btn.active { border-color: var(--accent-blue); background: rgba(74,158,255,0.18); color: var(--accent-blue); }
+  .passive-btn.passive-disabled { opacity: 0.4; cursor: not-allowed; }
+
+  .ssa-stat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 12px; margin-top: 16px; }
+  .ssa-stat {
+    background: var(--bg-deep); border: 1px solid var(--border);
+    border-radius: 10px; padding: 12px; cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+    user-select: none;
+  }
+  .ssa-stat.stat-selected {
+    border-color: var(--border-bright); background: rgba(74,158,255,0.05);
+  }
+  .ssa-stat.stat-disabled { opacity: 0.4; cursor: not-allowed; }
+  .ssa-stat-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+  .ssa-stat-label.blue { color: #6ab4ff; }
+  .ssa-stat-label.red { color: #ff7090; }
+  .ssa-stat-label.white { color: #dde4f5; }
+  .ssa-stat-label.bar-color { color: #b8a5ed; }
+  .ssa-stat-label.cc-color { color: #47cf72; }
+  .ssa-stat-label.bgp-color { color: #ceff80; }
+  .ssa-stat-label.ic-color { color: #f3fe1e; }
+  .ssa-stat-label.pol-color { color: #fdf6c0; }
+  .ssa-stat-label.gold { color: var(--accent-gold); }
+
+  /* SSA stepper — inline in the stat card */
+  .ssa-stat .stepper-wrap { margin-top: 0; }
+  .ssa-stat-placeholder {
+    font-family: 'Space Mono', monospace; font-size: 12px;
+    color: var(--text-dim); text-align: center; padding: 5px 0;
+    background: var(--bg-card2); border-radius: 6px;
+  }
+
+  /* SSA stat count warning */
+  .stat-warning {
+    margin-top: 14px; padding: 10px 14px;
+    background: rgba(245,200,66,0.08); border: 1px solid rgba(245,200,66,0.3);
+    border-radius: 8px; font-size: 13px; color: var(--accent-gold);
+    display: none;
+  }
+  .stat-warning.visible { display: block; }
+
+  /* GEAR */
+  .gear-section { margin-bottom: 20px; }
+  .gear-options { display: flex; flex-wrap: wrap; gap: 8px; }
+  .gear-btn {
+    padding: 7px 14px; border-radius: 8px; border: 1px solid var(--border);
+    background: var(--bg-deep); color: var(--text-muted); font-family: 'Outfit', sans-serif;
+    font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.2s;
+  }
+  .gear-btn:hover { border-color: var(--accent-blue); color: var(--text-primary); }
+  .gear-btn.active { border-color: var(--accent-blue); background: rgba(74,158,255,0.18); color: var(--accent-blue); }
+  .gear-label { font-size: 14px; font-weight: 600; color: var(--text-primary); margin-bottom: 8px; display: block; }
+
+  .checkbox-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+  .check-btn {
+    padding: 7px 14px; border-radius: 8px; border: 1px solid var(--border);
+    background: var(--bg-deep); color: var(--text-muted); font-family: 'Outfit', sans-serif;
+    font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.2s;
+  }
+  .check-btn:hover { border-color: var(--accent-teal); color: var(--text-primary); }
+  .check-btn.checked { border-color: var(--accent-teal); background: rgba(56,217,192,0.12); color: var(--accent-teal); }
+
+  /* CONDITIONAL SECTION */
+  .conditional-section { margin-top: 16px; padding: 16px; background: var(--bg-deep); border-radius: 10px; border: 1px solid var(--border); }
+
+  /* RESULTS */
+  #results-section { display: none; animation: fadeUp 0.5s ease; }
+  .results-header { text-align: center; padding: 24px 0 32px; }
+  .stage-badge {
+    display: inline-block; padding: 8px 24px; border-radius: 30px;
+    font-size: 15px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .badge-pre { background: rgba(120,100,80,0.2); border: 1px solid #a07040; color: #d4a070; }
+  .badge-early { background: rgba(74,158,255,0.15); border: 1px solid var(--accent-blue2); color: var(--accent-blue); }
+  .badge-standard { background: rgba(56,217,192,0.12); border: 1px solid var(--accent-teal); color: var(--accent-teal); }
+  .badge-late { background: rgba(245,200,66,0.12); border: 1px solid var(--accent-gold); color: var(--accent-gold); }
+  .badge-diamond { background: rgba(180,120,255,0.15); border: 1px solid #bb88ff; color: #cc99ff; }
+
+  .results-title { font-size: clamp(22px, 4vw, 30px); font-weight: 800; margin-bottom: 6px; }
+  .results-subtitle { color: var(--text-muted); font-size: 14px; }
+
+  .advice-section-title {
+    font-size: 13px; font-weight: 700; color: var(--text-muted);
+    text-transform: uppercase; letter-spacing: 1.5px; margin: 28px 0 10px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .advice-section-title::after {
+    content: ''; flex: 1; height: 1px; background: var(--border);
+  }
+
+  .advice-card {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: 12px; padding: 0; overflow: hidden; margin-bottom: 8px;
+  }
+  .advice-item {
+    display: flex; gap: 14px; align-items: flex-start;
+    padding: 14px 18px; border-bottom: 1px solid var(--border);
+  }
+  .advice-item:last-child { border-bottom: none; }
+  .advice-dot {
+    width: 22px; height: 22px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 800; flex-shrink: 0; margin-top: 1px;
+  }
+  .dot-critical { background: rgba(255,77,109,0.2); color: var(--accent-red); border: 1px solid rgba(255,77,109,0.4); }
+  .dot-important { background: rgba(74,158,255,0.15); color: var(--accent-blue); border: 1px solid var(--border-bright); }
+  .dot-good { background: rgba(76,175,80,0.15); color: #6dcc71; border: 1px solid rgba(76,175,80,0.35); }
+  .dot-info { background: rgba(245,200,66,0.12); color: var(--accent-gold); border: 1px solid rgba(245,200,66,0.3); }
+  .dot-neutral { background: rgba(120,130,160,0.15); color: var(--text-muted); border: 1px solid var(--border); }
+  .advice-text { font-size: 14px; line-height: 1.6; color: var(--text-primary); }
+  .advice-text strong { color: var(--accent-gold); font-weight: 600; }
+  .advice-text em { color: var(--accent-teal); font-style: normal; }
+
+  /* NEXT GOALS */
+  .goals-card {
+    background: var(--bg-card2); border: 1px solid var(--border-bright);
+    border-radius: 14px; padding: 22px; margin-top: 8px;
+  }
+  .goals-title { font-size: 16px; font-weight: 700; margin-bottom: 16px; color: var(--accent-gold); }
+  .goal-item { display: flex; gap: 12px; align-items: flex-start; margin-bottom: 12px; }
+  .goal-num {
+    width: 24px; height: 24px; border-radius: 50%; background: rgba(245,200,66,0.15);
+    border: 1px solid rgba(245,200,66,0.35); color: var(--accent-gold);
+    font-size: 11px; font-weight: 800; font-family: 'Space Mono', monospace;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .goal-text { font-size: 14px; line-height: 1.5; color: var(--text-primary); }
+
+  .btn-restart {
+    display: block; margin: 36px auto 0; padding: 12px 32px;
+    border-radius: 10px; border: 1px solid var(--border-bright);
+    background: transparent; color: var(--accent-blue); font-family: 'Outfit', sans-serif;
+    font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.2s;
+  }
+  .btn-restart:hover { background: rgba(74,158,255,0.1); transform: translateY(-1px); }
+
+  /* FOOTER */
+  footer {
+    text-align: center; padding: 32px 20px; border-top: 1px solid var(--border);
+    color: var(--text-dim); font-size: 13px; margin-top: 40px;
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeDown { from { opacity: 0; transform: translateY(-16px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* RESPONSIVE */
+  @media (max-width: 600px) {
+    .card { padding: 18px; }
+    .step-label { display: none; }
+    .bee-col-headers, .bee-row { grid-template-columns: 1fr 95px 95px; gap: 6px; }
+  }
+
+  .divider { height: 1px; background: var(--border); margin: 20px 0; }
+  .info-note { background: rgba(74,158,255,0.06); border: 1px solid var(--border); border-radius: 8px; padding: 12px 16px; font-size: 13px; color: var(--text-muted); margin-bottom: 16px; }
+  .info-note strong { color: var(--accent-blue); }
+nav.top{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px 16px;max-width:960px;margin:0 auto;padding:14px 20px;border-bottom:1px solid var(--border);position:relative;z-index:1}
+nav.top a{color:var(--text-primary);text-decoration:none}
+nav.top .brand{font-weight:700;display:inline-flex;align-items:center;gap:8px}
+nav.top .brand img{border-radius:6px}
+nav.top span a{margin-left:16px;color:var(--text-muted)}
+nav.top a:hover{color:var(--accent-blue)}
+footer p{margin:4px 0}
+footer a,.info-note a{color:var(--accent-blue)}
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"BSS Blue Hive Optimizer","url":"https://bssoptimizer.github.io/blue-hive-optimizer/","description":"Free Bee Swarm Simulator Blue Hive Optimizer and hive planning tool.","applicationCategory":"GameApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
+</head>
+<body>
+<nav class="top"><a class="brand" href="/"><img src="/logo.png" alt="" width="24" height="24">BSS Optimizer Tools</a><span><a href="/blue-hive-optimizer/">Blue Hive Optimizer</a><a href="/amulet-rater/">Amulet Rater</a></span></nav>
+<div class="container">
+  <header>
+    <div class="header-badge">🐝 Bee Swarm Simulator</div>
+    <h1>Blue Hive Optimizer</h1>
+    <p>Enter your hive details to get personalized, stage-specific advice for maximum honey production.</p>
+  </header>
+
+  <!-- PROGRESS BAR -->
+  <div class="progress-wrap" id="progress-wrap">
+    <div class="progress-steps" id="progress-steps"></div>
+    <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+  </div>
+
+  <!-- STEP 1: BASICS -->
+  <div class="card visible" id="step-1">
+    <div class="card-title"><span class="step-num">1</span> Basics</div>
+    <div class="card-subtitle">Tell us about your hive and playstyle.</div>
+
+    <div class="field-row">
+      <div class="field-group">
+        <label class="field-label">Average Hive Level</label>
+        <input type="number" id="hive-level" min="1" max="25" placeholder="e.g. 15">
+      </div>
+      <div class="field-group">
+        <label class="field-label">Hive Slots</label>
+        <input type="number" id="hive-slots" min="25" max="50" placeholder="e.g. 45">
+      </div>
+    </div>
+
+    <div class="field-group">
+      <label class="field-label">Do you macro?</label>
+      <div class="toggle-group" id="macro-toggle">
+        <button class="toggle-btn" onclick="setToggle('macro','yes',this)">Yes</button>
+        <button class="toggle-btn" onclick="setToggle('macro','no',this)">No — I only play actively</button>
+      </div>
+    </div>
+
+    <div class="field-group" id="tad-alt-group" style="display:none">
+      <label class="field-label">Do you have a Tadpole Alt?</label>
+      <div class="toggle-group" id="tad-alt-toggle">
+        <button class="toggle-btn" onclick="setToggle('tadAlt','yes',this)">Yes</button>
+        <button class="toggle-btn" onclick="setToggle('tadAlt','no',this)">No</button>
+      </div>
+    </div>
+
+    <div class="field-group">
+      <label class="field-label">How is your fill?</label>
+      <div class="toggle-group" id="fill-toggle">
+        <button class="toggle-btn" onclick="setToggle('fill','underfilling',this)">Underfilling</button>
+        <button class="toggle-btn" onclick="setToggle('fill','good',this)">Good</button>
+        <button class="toggle-btn" onclick="setToggle('fill','overfilling',this)">Overfilling</button>
+        <button class="toggle-btn" onclick="setToggle('fill','unknown',this)">Don't Know</button>
+      </div>
+    </div>
+
+    <div class="nav-row">
+      <div></div>
+      <button class="btn-next" onclick="goTo(2)">Next: Bees →</button>
+    </div>
+  </div>
+
+  <!-- STEP 2: BEES -->
+  <div class="card" id="step-2">
+    <div class="card-title"><span class="step-num">2</span> Your Bees</div>
+    <div class="card-subtitle">Enter how many of each bee you have. If all are gifted, just fill in the ⭐ Gifted column — it'll auto-fill Total.</div>
+    <div id="bee-inputs-container"></div>
+    <div class="bee-total-bar">
+      <span>Total bees entered</span>
+      <strong id="bee-grand-total">0</strong>
+    </div>
+    <div class="nav-row">
+      <button class="btn-back" onclick="goTo(1)">← Back</button>
+      <button class="btn-next" onclick="goTo(3)">Next: SSA →</button>
+    </div>
+  </div>
+
+  <!-- STEP 3: SSA -->
+  <div class="card" id="step-3">
+    <div class="card-title"><span class="step-num">3</span> Supreme Star Amulet</div>
+    <div class="card-subtitle">Your SSA stats will help us provide advice specific to you.</div>
+    <div class="info-note">Not sure if your amulet is any good? Try the <a href="/amulet-rater/">Supreme Star Amulet Rater</a>.</div>
+
+    <div class="field-group">
+      <label class="field-label">Do you have an SSA?</label>
+      <div class="toggle-group" id="ssaHas-toggle">
+        <button class="toggle-btn" onclick="setToggle('ssaHas','yes',this); document.getElementById('ssa-details').style.display='block'">Yes</button>
+        <button class="toggle-btn" onclick="setToggle('ssaHas','no',this); document.getElementById('ssa-details').style.display='none'">No</button>
+      </div>
+    </div>
+
+    <div id="ssa-details" style="display:none">
+      <div class="field-group">
+        <label class="field-label">SSA Passives (select up to 2)</label>
+        <div class="passive-grid" id="ssa-passives">
+          <button class="passive-btn" data-passive="pop" onclick="togglePassive(this)">
+            <span style="color:#7ec8ff;font-size:15px;margin-right:4px;">★</span> Pop Star
+          </button>
+          <button class="passive-btn" data-passive="guiding" onclick="togglePassive(this)">🌟 Guiding Star</button>
+          <button class="passive-btn" data-passive="shower" onclick="togglePassive(this)">✨ Star Shower</button>
+          <button class="passive-btn" data-passive="saw" onclick="togglePassive(this)"><span style="color:#cccccc;font-size:15px;margin-right:4px;">★</span> Star Saw</button>
+          <button class="passive-btn" data-passive="scorching" onclick="togglePassive(this)"><span style="color:#ff4d4d;font-size:15px;margin-right:4px;">★</span> Scorching Star</button>
+          <button class="passive-btn" data-passive="gummy" onclick="togglePassive(this)"><span style="color:#c98fcc;font-size:15px;margin-right:4px;">★</span> Gummy Star</button>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+      <div class="field-group">
+        <label class="field-label">SSA Stats <span style="font-weight:400;color:var(--text-muted);">— x2.5 Capacity is guaranteed</span></label>
+        <div style="font-size:12px;color:var(--text-muted);margin-bottom:12px;">Click a stat to select it and enter its value. You can select up to 5 stats.</div>
+        <div class="ssa-stat-grid" id="ssa-stat-grid">
+          <!-- Populated by JS -->
+        </div>
+        <div class="stat-warning" id="stat-warning">
+          ⚠ Every SSA has 5 stats — you've selected fewer than 5. Make sure you haven't missed any.
+        </div>
+      </div>
+    </div>
+
+    <div class="nav-row">
+      <button class="btn-back" onclick="goTo(2)">← Back</button>
+      <button class="btn-next" onclick="goTo(4)">Next: Gear →</button>
+    </div>
+  </div>
+
+  <!-- STEP 4: GEAR -->
+  <div class="card" id="step-4">
+    <div class="card-title"><span class="step-num">4</span> Gear & Items</div>
+    <div class="card-subtitle">Select your current equipment. This helps us determine your stage and recommend upgrades.</div>
+
+    <div class="gear-section">
+      <label class="gear-label">Mask</label>
+      <div class="gear-options" id="gear-mask"></div>
+    </div>
+    <div class="gear-section">
+      <label class="gear-label">Backpack</label>
+      <div class="gear-options" id="gear-backpack"></div>
+    </div>
+    <div class="gear-section">
+      <label class="gear-label">Collector</label>
+      <div class="gear-options" id="gear-collector"></div>
+    </div>
+    <div class="gear-section">
+      <label class="gear-label">Belt</label>
+      <div class="gear-options" id="gear-belt"></div>
+    </div>
+    <div class="gear-section">
+      <label class="gear-label">Boots</label>
+      <div class="gear-options" id="gear-boots"></div>
+    </div>
+
+    <div class="divider"></div>
+    <div class="field-group" style="margin-bottom:0">
+      <label class="gear-label">Planters</label>
+      <div class="checkbox-grid">
+        <button class="check-btn" id="item-clay" onclick="toggleItem('clayPlanter',this)"><span style="filter:sepia(1) saturate(3) hue-rotate(195deg) brightness(0.55);">🏺</span> Blue Clay Planter</button>
+        <button class="check-btn" id="item-petal" onclick="toggleItem('petalPlanter',this)">🌼 Petal Planter</button>
+        <button class="check-btn" id="item-hydro" onclick="toggleItem('hydroPlanter',this)">💧 Hydroponic Planter</button>
+      </div>
+    </div>
+
+    <button class="btn-analyze" onclick="analyze()">🔍 Analyze My Hive</button>
+
+    <div class="nav-row" style="margin-top:16px">
+      <button class="btn-back" onclick="goTo(3)">← Back</button>
+      <div></div>
+    </div>
+  </div>
+
+  <!-- RESULTS -->
+  <div id="results-section">
+    <div class="results-header">
+      <div id="results-stage-badge" class="stage-badge"></div>
+      <div class="results-title" id="results-title"></div>
+      <div class="results-subtitle" id="results-subtitle"></div>
+    </div>
+    <div id="results-body"></div>
+    <button class="btn-restart" onclick="restart()">↺ Start Over</button>
+  </div>
+
+  <footer><p><a href="/about/">About</a> · <a href="/contact/">Contact</a> · <a href="/privacy/">Privacy Policy</a></p><p>Based on guides from BSGH (Bee Swarm Guide Help) and gathered community data. Unofficial fan site, not affiliated with Onett or Roblox.</p></footer>
+</div>
+
+<script>
+// ============================================================
+// DATA
+// ============================================================
+const BEES = {
+  Common: ['Basic'],
+  Rare: ['Bomber','Brave','Bumble','Cool','Hasty','Looker','Rad','Rascal','Stubborn'],
+  Epic: ['Bubble','Bucko','Commander','Demo','Exhausted','Fire','Frosty','Honey','Rage','Riley','Shocked'],
+  Legendary: ['Baby','Carpenter','Demon','Diamond','Lion','Music','Ninja','Shy'],
+  Mythic: ['Buoyant','Fuzzy','Precise','Spicy','Tadpole','Vector'],
+  Event: ['Bear','Cobalt','Crimson','Digital','Festive','Gummy','Photon','Puppy','Tabby','Vicious','Windy']
+};
+
+const RARITY_COLORS = {
+  Common:'#a07040', Rare:'#cccccc', Epic:'#f0c000',
+  Legendary:'#44cccc', Mythic:'#cc88ff', Event:'#88ff88'
+};
+
+const GEAR_MASKS = ['Helmet','Propeller Hat','Beekeeper\'s Mask','Honey Mask','Fire Mask','Bubble Mask','Diamond Mask','Demon Mask','Gummy Mask'];
+const GEAR_BACKPACKS = ['Port-O-Hive','Red Port-O-Hive','Blue Port-O-Hive','Porcelain Port-O-Hive','Coconut Canister','Other'];
+const GEAR_COLLECTORS = ['Porcelain Dipper','Petal Wand','Tide Popper','Dark Scythe','Gummyballer','Other'];
+const GEAR_BELTS = ['Belt Pocket','Belt Bag','Mondo Belt Bag','Honeycomb Belt','Petal Belt','Coconut Belt'];
+const GEAR_BOOTS = ['Basic Boots','Hiking Boots','Beekeeper\'s Boots','Coconut Clogs','Gummy Boots'];
+
+// SSA stat definitions
+const SSA_STATS = [
+  { id:'bp',  label:'Blue Pollen %',       colorClass:'blue',      min:15, max:70,   step:1,    default:0 },
+  { id:'rp',  label:'Red Pollen %',        colorClass:'red',       min:15, max:70,   step:1,    default:0 },
+  { id:'wp',  label:'White Pollen %',      colorClass:'white',     min:15, max:70,   step:1,    default:0 },
+  { id:'pol', label:'Pollen %',            colorClass:'pol-color', min:5,  max:20,   step:1,    default:0 },
+  { id:'cr',  label:'Convert Rate ×',      colorClass:'gold',      min:1.05,max:1.25,step:0.01, default:0 },
+  { id:'bar', label:'Bee Ability Rate %',  colorClass:'bar-color', min:1,  max:7,    step:1,    default:0 },
+  { id:'cc',  label:'Critical Chance %',   colorClass:'cc-color',  min:1,  max:7,    step:1,    default:0 },
+  { id:'bgp', label:'Bee Gather Pollen %', colorClass:'bgp-color', min:15, max:70,   step:1,    default:0 },
+  { id:'ic',  label:'Instant Conversion %',colorClass:'ic-color',  min:3,  max:12,   step:1,    default:0 },
+];
+
+// ============================================================
+// STATE
+// ============================================================
+const state = {
+  macro: null, tadAlt: null, fill: null,
+  ssaHas: null, ssaPassives: [],
+  ssaStats: {}, // key: stat id, value: number (null if not selected)
+  ssaSelectedStats: new Set(), // which stats are currently selected
+  mask: null, backpack: null, collector: null, belt: null, boots: null,
+  petalPlanter: false, hydroPlanter: false, clayPlanter: false,
+  bees: {}
+};
+
+let currentStep = 1;
+const TOTAL_STEPS = 5;
+const STEP_LABELS = ['Basics','Bees','SSA','Gear','Results'];
+
+// Hold-to-repeat timers
+let holdTimer = null;
+let holdInterval = null;
+
+// ============================================================
+// INIT
+// ============================================================
+function init() {
+  buildProgressBar();
+  buildBeeInputs();
+  buildSSAStats();
+  buildGearOptions();
+  updateProgress();
+}
+
+function buildProgressBar() {
+  const wrap = document.getElementById('progress-steps');
+  wrap.innerHTML = '';
+  for (let i = 1; i <= TOTAL_STEPS; i++) {
+    if (i > 1) {
+      const line = document.createElement('div');
+      line.className = 'step-line';
+      line.id = `step-line-${i}`;
+      wrap.appendChild(line);
+    }
+    const item = document.createElement('div');
+    item.className = 'step-item';
+    item.onclick = () => { if (i < currentStep || i <= 4) goTo(i); };
+    item.innerHTML = `<div class="step-dot" id="step-dot-${i}">${i}</div><div class="step-label" id="step-label-${i}">${STEP_LABELS[i-1]}</div>`;
+    wrap.appendChild(item);
+  }
+}
+
+function updateProgress() {
+  for (let i = 1; i <= TOTAL_STEPS; i++) {
+    const dot = document.getElementById(`step-dot-${i}`);
+    const lbl = document.getElementById(`step-label-${i}`);
+    dot.className = 'step-dot' + (i === currentStep ? ' active' : i < currentStep ? ' done' : '');
+    lbl.className = 'step-label' + (i === currentStep ? ' active' : i < currentStep ? ' done' : '');
+    if (i > 1) {
+      const line = document.getElementById(`step-line-${i}`);
+      if (line) line.className = 'step-line' + (i <= currentStep ? ' done' : '');
+    }
+  }
+  const pct = ((currentStep - 1) / (TOTAL_STEPS - 1)) * 100;
+  document.getElementById('progress-fill').style.width = pct + '%';
+}
+
+// ============================================================
+// BEE COLORS
+// ============================================================
+const BEE_COLORS = {
+  // Blue bees
+  Bumble:'#4a9eff', Cool:'#4a9eff', Bubble:'#4a9eff', Bucko:'#4a9eff',
+  Frosty:'#4a9eff', Diamond:'#4a9eff', Ninja:'#4a9eff', Buoyant:'#4a9eff',
+  Tadpole:'#4a9eff', Cobalt:'#4a9eff', Vicious:'#4a9eff',
+  // Red bees
+  Rad:'#ff4d6d', Rascal:'#ff4d6d', Fire:'#ff4d6d', Rage:'#ff4d6d',
+  Riley:'#ff4d6d', Demon:'#ff4d6d', Shy:'#ff4d6d', Precise:'#ff4d6d',
+  Spicy:'#ff4d6d', Crimson:'#ff4d6d', Festive:'#ff4d6d',
+};
+
+// ============================================================
+// BEE INPUTS — with stepper arrows + hold-to-repeat
+// ============================================================
+function beeId(bee) { return bee.replace(/[^a-zA-Z]/g,'_'); }
+
+function buildBeeInputs() {
+  const container = document.getElementById('bee-inputs-container');
+  container.innerHTML = '';
+  for (const [rarity, bees] of Object.entries(BEES)) {
+    const section = document.createElement('div');
+    section.className = 'rarity-section';
+    const isEvent = rarity === 'Event';
+    const maxCount = isEvent ? 1 : 50;
+    const beeRows = bees.map(bee => {
+      const id = beeId(bee);
+      const nameColor = BEE_COLORS[bee] ? `color:${BEE_COLORS[bee]};` : '';
+      return `
+        <div class="bee-row" id="row-${id}">
+          <div class="bee-name" style="${nameColor}">${bee}</div>
+          <div class="stepper-wrap">
+            <button class="stepper-btn"
+              onmousedown="startHold('count-${id}',false,'${bee}')"
+              onmouseup="stopHold()" onmouseleave="stopHold()"
+              ontouchstart="startHold('count-${id}',false,'${bee}')" ontouchend="stopHold()">−</button>
+            <input class="stepper-input" type="number" id="count-${id}" min="0" max="${maxCount}" value="0"
+              oninput="onTotalChange('${bee}',this.value)">
+            <button class="stepper-btn"
+              onmousedown="startHold('count-${id}',true,'${bee}')"
+              onmouseup="stopHold()" onmouseleave="stopHold()"
+              ontouchstart="startHold('count-${id}',true,'${bee}')" ontouchend="stopHold()">+</button>
+          </div>
+          <div class="stepper-wrap">
+            <button class="stepper-btn"
+              onmousedown="startHold('gifted-${id}',false,'${bee}',true)"
+              onmouseup="stopHold()" onmouseleave="stopHold()"
+              ontouchstart="startHold('gifted-${id}',false,'${bee}',true)" ontouchend="stopHold()">−</button>
+            <input class="stepper-input" type="number" id="gifted-${id}" min="0" max="${maxCount}" value="0"
+              oninput="onGiftedChange('${bee}',this.value)">
+            <button class="stepper-btn"
+              onmousedown="startHold('gifted-${id}',true,'${bee}',true)"
+              onmouseup="stopHold()" onmouseleave="stopHold()"
+              ontouchstart="startHold('gifted-${id}',true,'${bee}',true)" ontouchend="stopHold()">+</button>
+          </div>
+        </div>`;
+    }).join('');
+    section.innerHTML = `
+      <div class="rarity-header" onclick="toggleRarity(this)">
+        <span class="rarity-label" style="color:${RARITY_COLORS[rarity]}">${rarity}</span>
+        <span class="rarity-arrow">▼</span>
+      </div>
+      <div class="rarity-body">
+        <div class="bee-col-headers">
+          <span>Bee</span><span>Total</span><span>⭐ Gifted</span>
+        </div>
+        ${beeRows}
+      </div>`;
+    container.appendChild(section);
+  }
+}
+
+function startHold(inputId, increment, bee, isGifted) {
+  const step = () => {
+    const input = document.getElementById(inputId);
+    if (!input) return;
+    const maxVal = parseInt(input.max) || 50;
+    let val = parseInt(input.value) || 0;
+    val = increment ? Math.min(maxVal, val + 1) : Math.max(0, val - 1);
+    input.value = val;
+    if (isGifted) onGiftedChange(bee, val);
+    else onTotalChange(bee, val);
+  };
+  step();
+  holdTimer = setTimeout(() => {
+    holdInterval = setInterval(step, 80);
+  }, 400);
+}
+
+function stopHold() {
+  clearTimeout(holdTimer);
+  clearInterval(holdInterval);
+  holdTimer = null;
+  holdInterval = null;
+}
+
+function onGiftedChange(bee, val) {
+  const giftedInput = document.getElementById('gifted-' + beeId(bee));
+  const maxVal = parseInt(giftedInput?.max) || 50;
+  let g = parseInt(val) || 0;
+  if (g > maxVal) { g = maxVal; giftedInput.value = g; }
+  const totalInput = document.getElementById('count-' + beeId(bee));
+  const totalMax = parseInt(totalInput?.max) || 50;
+  let t = parseInt(totalInput.value) || 0;
+  if (g > t) { totalInput.value = Math.min(g, totalMax); }
+  highlightRow(bee);
+  updateBeeGrandTotal();
+}
+
+function onTotalChange(bee, val) {
+  const totalInput = document.getElementById('count-' + beeId(bee));
+  const maxVal = parseInt(totalInput?.max) || 50;
+  let n = parseInt(val) || 0;
+  if (n > maxVal) { n = maxVal; totalInput.value = n; }
+  const giftedInput = document.getElementById('gifted-' + beeId(bee));
+  const g = parseInt(giftedInput.value) || 0;
+  if (g > n) giftedInput.value = n;
+  highlightRow(bee);
+  updateBeeGrandTotal();
+}
+
+function highlightRow(bee) {
+  const row = document.getElementById('row-' + beeId(bee));
+  const count = parseInt(document.getElementById('count-' + beeId(bee)).value) || 0;
+  if (row) row.classList.toggle('has-bees', count > 0);
+}
+
+function updateBeeGrandTotal() {
+  let total = 0;
+  for (const rarityBees of Object.values(BEES)) {
+    for (const bee of rarityBees) {
+      total += parseInt(document.getElementById('count-' + beeId(bee)).value) || 0;
+    }
+  }
+  document.getElementById('bee-grand-total').textContent = total;
+}
+
+// ============================================================
+// SSA STATS — clickable tiles with steppers, max 5 selected
+// ============================================================
+function buildSSAStats() {
+  const grid = document.getElementById('ssa-stat-grid');
+  grid.innerHTML = '';
+  SSA_STATS.forEach(stat => {
+    const tile = document.createElement('div');
+    tile.className = 'ssa-stat';
+    tile.id = `stat-tile-${stat.id}`;
+    tile.innerHTML = `
+      <div class="ssa-stat-label ${stat.colorClass}">${stat.label}</div>
+      <div id="stat-display-${stat.id}" class="ssa-stat-placeholder">0</div>`;
+    tile.onclick = () => toggleStat(stat.id);
+    grid.appendChild(tile);
+  });
+}
+
+function toggleStat(statId) {
+  const tile = document.getElementById(`stat-tile-${statId}`);
+  const isSelected = state.ssaSelectedStats.has(statId);
+
+  if (isSelected) {
+    // Deselect
+    state.ssaSelectedStats.delete(statId);
+    delete state.ssaStats[statId];
+    tile.classList.remove('stat-selected');
+    const display = document.getElementById(`stat-display-${statId}`);
+    display.outerHTML = `<div id="stat-display-${statId}" class="ssa-stat-placeholder">0</div>`;
+    updateStatWarning();
+    refreshStatDisabled();
+    return;
+  }
+
+  if (state.ssaSelectedStats.size >= 5) return; // max reached
+
+  // Select
+  state.ssaSelectedStats.add(statId);
+  const def = SSA_STATS.find(s => s.id === statId);
+  state.ssaStats[statId] = def.min;
+  tile.classList.add('stat-selected');
+
+  // Replace placeholder with stepper (stop click propagation on stepper)
+  const display = document.getElementById(`stat-display-${statId}`);
+  const stepperHtml = `
+    <div class="stepper-wrap" onclick="event.stopPropagation()" id="stat-display-${statId}">
+      <button class="stepper-btn"
+        onmousedown="startHoldStat('${statId}',false)"
+        onmouseup="stopHold()" onmouseleave="stopHold()"
+        ontouchstart="startHoldStat('${statId}',false)" ontouchend="stopHold()">−</button>
+      <input class="stepper-input" type="number" id="ssa-input-${statId}"
+        min="${def.min}" max="${def.max}" step="${def.step}" value="${def.min}"
+        oninput="onSSAStatInput('${statId}',this.value)"
+        onblur="clampSSAStatOnBlur('${statId}')"
+        onclick="event.stopPropagation()">
+      <button class="stepper-btn"
+        onmousedown="startHoldStat('${statId}',true)"
+        onmouseup="stopHold()" onmouseleave="stopHold()"
+        ontouchstart="startHoldStat('${statId}',true)" ontouchend="stopHold()">+</button>
+    </div>`;
+  display.outerHTML = stepperHtml;
+  updateStatWarning();
+  refreshStatDisabled();
+}
+
+function startHoldStat(statId, increment) {
+  const def = SSA_STATS.find(s => s.id === statId);
+  const step = () => {
+    const input = document.getElementById(`ssa-input-${statId}`);
+    if (!input) return;
+    let val = parseFloat(input.value) || def.min;
+    val = increment ? val + def.step : val - def.step;
+    val = Math.min(def.max, Math.max(def.min, parseFloat(val.toFixed(2))));
+    input.value = val;
+    state.ssaStats[statId] = val;
+  };
+  step();
+  holdTimer = setTimeout(() => {
+    holdInterval = setInterval(step, 80);
+  }, 400);
+}
+
+function onSSAStatInput(statId, val) {
+  const def = SSA_STATS.find(s => s.id === statId);
+  let n = parseFloat(val);
+  if (isNaN(n)) n = def.min;
+  n = Math.min(def.max, Math.max(def.min, parseFloat(n.toFixed(2))));
+  state.ssaStats[statId] = n;
+  // Update the displayed input to clamped value on blur/change
+  const input = document.getElementById(`ssa-input-${statId}`);
+  if (input && document.activeElement !== input) {
+    input.value = n;
+  }
+}
+
+function clampSSAStatOnBlur(statId) {
+  const def = SSA_STATS.find(s => s.id === statId);
+  const input = document.getElementById(`ssa-input-${statId}`);
+  if (!input) return;
+  let n = parseFloat(input.value);
+  if (isNaN(n)) n = def.min;
+  n = Math.min(def.max, Math.max(def.min, parseFloat(n.toFixed(2))));
+  input.value = n;
+  state.ssaStats[statId] = n;
+}
+
+function refreshStatDisabled() {
+  SSA_STATS.forEach(stat => {
+    const tile = document.getElementById(`stat-tile-${stat.id}`);
+    if (!tile) return;
+    const isSelected = state.ssaSelectedStats.has(stat.id);
+    const maxReached = state.ssaSelectedStats.size >= 5;
+    if (!isSelected && maxReached) {
+      tile.classList.add('stat-disabled');
+    } else {
+      tile.classList.remove('stat-disabled');
+    }
+  });
+}
+
+function updateStatWarning() {
+  const warn = document.getElementById('stat-warning');
+  const count = state.ssaSelectedStats.size;
+  if (count > 0 && count < 5) {
+    warn.classList.add('visible');
+  } else {
+    warn.classList.remove('visible');
+  }
+}
+
+// ============================================================
+// GEAR OPTIONS
+// ============================================================
+function buildGearOptions() {
+  function buildGroup(containerId, options, stateKey) {
+    const el = document.getElementById(containerId);
+    if (!el) return;
+    el.innerHTML = '';
+    options.forEach(opt => {
+      const btn = document.createElement('button');
+      btn.className = 'gear-btn';
+      btn.textContent = opt;
+      btn.onclick = () => {
+        el.querySelectorAll('.gear-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        state[stateKey] = opt;
+      };
+      el.appendChild(btn);
+    });
+  }
+  buildGroup('gear-mask', GEAR_MASKS, 'mask');
+  buildGroup('gear-backpack', GEAR_BACKPACKS, 'backpack');
+  buildGroup('gear-collector', GEAR_COLLECTORS, 'collector');
+  buildGroup('gear-belt', GEAR_BELTS, 'belt');
+  buildGroup('gear-boots', GEAR_BOOTS, 'boots');
+}
+
+// ============================================================
+// NAVIGATION
+// ============================================================
+function goTo(step) {
+  document.querySelectorAll('.card').forEach(c => c.classList.remove('visible'));
+  const target = document.getElementById(`step-${step}`);
+  if (target) target.classList.add('visible');
+  document.getElementById('results-section').style.display = 'none';
+  document.getElementById('progress-wrap').style.display = 'block';
+  currentStep = step;
+  updateProgress();
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+// ============================================================
+// TOGGLES
+// ============================================================
+function setToggle(key, val, btn) {
+  state[key] = val;
+  const groupIdMap = { tadAlt: 'tad-alt-toggle', ssaHas: 'ssaHas-toggle' };
+  const groupId = groupIdMap[key] || (key + '-toggle');
+  const group = document.getElementById(groupId);
+  if (group) group.querySelectorAll('.toggle-btn').forEach(b => {
+    b.classList.remove('active','active-yes','active-no');
+  });
+  if (btn) {
+    if (val === 'yes') btn.classList.add('active-yes');
+    else if (val === 'no') btn.classList.add('active-no');
+    else btn.classList.add('active');
+  }
+  if (key === 'macro') {
+    document.getElementById('tad-alt-group').style.display = val === 'yes' ? 'block' : 'none';
+    if (val === 'no') {
+      state.tadAlt = null;
+      document.getElementById('tad-alt-toggle').querySelectorAll('.toggle-btn')
+        .forEach(b => b.classList.remove('active','active-yes','active-no'));
+    }
+  }
+}
+
+function togglePassive(btn) {
+  const p = btn.dataset.passive;
+  if (btn.classList.contains('active')) {
+    // Deselect
+    btn.classList.remove('active');
+    state.ssaPassives = state.ssaPassives.filter(x => x !== p);
+  } else {
+    if (btn.classList.contains('passive-disabled')) return;
+    if (state.ssaPassives.length >= 2) return;
+    btn.classList.add('active');
+    state.ssaPassives.push(p);
+  }
+  // Refresh disabled state
+  const allBtns = document.querySelectorAll('.passive-btn');
+  if (state.ssaPassives.length >= 2) {
+    allBtns.forEach(b => { if (!b.classList.contains('active')) b.classList.add('passive-disabled'); });
+  } else {
+    allBtns.forEach(b => b.classList.remove('passive-disabled'));
+  }
+}
+
+function toggleItem(key, btn) {
+  state[key] = !state[key];
+  btn.classList.toggle('checked', state[key]);
+}
+
+function toggleRarity(header) {
+  header.parentElement.classList.toggle('collapsed');
+}
+
+// ============================================================
+// COLLECT BEES
+// ============================================================
+function collectBees() {
+  const bees = {};
+  for (const rarityBees of Object.values(BEES)) {
+    for (const bee of rarityBees) {
+      const count = parseInt(document.getElementById('count-' + beeId(bee)).value) || 0;
+      const gifted = parseInt(document.getElementById('gifted-' + beeId(bee)).value) || 0;
+      bees[bee] = { count, gifted };
+    }
+  }
+  return bees;
+}
+
+// ============================================================
+// STAGE DETECTION
+// ============================================================
+function detectStage(bees, ssaHas, ssaPassives, hiveLevel, hiveSlots, mask) {
+  const hasPopStar = ssaPassives.includes('pop');
+  if (!ssaHas || !hasPopStar) return 'pre-blue';
+  const diamond = bees['Diamond']?.count || 0;
+  const level = parseInt(hiveLevel) || 0;
+  const slots = parseInt(hiveSlots) || 25;
+  const buoy = bees['Buoyant']?.count || 0;
+  const tad = bees['Tadpole']?.count || 0;
+  const maskStr = mask || '';
+  const hasDiamondMask = maskStr.includes('Diamond') || maskStr.includes('Demon') || maskStr.includes('Gummy');
+  const giftedTotal = Object.values(bees).reduce((s,b) => s + b.gifted, 0);
+  const totalBees = Object.values(bees).reduce((s,b) => s + b.count, 0);
+  const fullyGifted = totalBees > 0 && (giftedTotal / totalBees) >= 0.85;
+
+  if (diamond >= 7 && level >= 18 && slots >= 48) return 'diamond';
+  if (slots < 40 || level < 12) return 'early-blue';
+  if (level >= 18 && fullyGifted && slots >= 48) return 'late-standard';
+  if (level >= 13 && (buoy >= 8 || tad >= 4) && hasDiamondMask) return 'standard';
+  if (level >= 13 && (buoy >= 8 || tad >= 4)) return 'standard';
+  return 'early-blue';
+}
+
+// ============================================================
+// MAIN ANALYZE
+// ============================================================
+function analyze() {
+  const bees = collectBees();
+  state.bees = bees;
+
+  const hiveLevel = parseInt(document.getElementById('hive-level').value) || 0;
+  const hiveSlots = parseInt(document.getElementById('hive-slots').value) || 25;
+
+  // Collect SSA stat values from selected stats
+  const ssaValues = {};
+  state.ssaSelectedStats.forEach(statId => {
+    const input = document.getElementById(`ssa-input-${statId}`);
+    ssaValues[statId] = input ? (parseFloat(input.value) || null) : null;
+  });
+
+  const ssaHas = state.ssaHas === 'yes';
+  const stage = detectStage(bees, ssaHas, state.ssaPassives, hiveLevel, hiveSlots, state.mask);
+
+  const sections = {};
+  sections.hive = analyzeHiveComp(bees, stage, hiveLevel, hiveSlots);
+  sections.fill = analyzeFill(bees, stage);
+  sections.buffs = analyzeBuffSources(bees, stage);
+  sections.ssa = analyzeSSA(ssaHas, state.ssaPassives, ssaValues, stage, hiveLevel);
+  sections.gear = analyzeGear(stage, hiveLevel);
+  sections.gifting = analyzeGifting(bees, stage, hiveLevel);
+  if (stage === 'diamond' || (stage === 'late-standard' && hiveLevel >= 18)) {
+    sections.diamond = analyzeDiamond(bees, stage, hiveLevel);
+  }
+  const goals = buildNextGoals(bees, stage, hiveLevel, hiveSlots, ssaHas);
+
+  renderResults(stage, hiveLevel, sections, goals);
+}
+
+// ============================================================
+// ANALYSIS HELPERS
+// ============================================================
+function adv(type, text) { return { type, text }; }
+
+// ============================================================
+// HIVE COMPOSITION ANALYSIS
+// ============================================================
+function analyzeHiveComp(bees, stage, hiveLevel, hiveSlots) {
+  const items = [];
+  const b = (name) => bees[name]?.count || 0;
+  const g = (name) => bees[name]?.gifted || 0;
+
+  if (stage === 'pre-blue') {
+    items.push(adv('info', 'Your primary focus should be getting a <strong>Pop Star SSA</strong> before changing your hive composition. Do not switch to a blue hive without it.'));
+    return items;
+  }
+
+  // Warn if many Diamond Bees but under level 20
+  const hiveLevel_num = parseInt(hiveLevel) || 0;
+  const diamondCount = b('Diamond');
+  if (diamondCount >= 5 && hiveLevel_num < 20) {
+    items.push(adv('important', `You have <strong>${diamondCount} Diamond Bees</strong>, but the diamond meta is only recommended for players at <strong>hive level 20 or higher</strong>. At your current level, a standard blue hive composition will perform better.`));
+  }
+
+  // CRITICAL: instant conversion bees
+  if (b('Cobalt') > 0) {
+    items.push(adv('critical', `<strong>Remove Cobalt Bee</strong> — instant conversion is harmful in a blue hive. It converts pollen before your balloon is full, wasting your potential. Replace with a Buoyant Bee.`));
+  }
+  if (b('Photon') > 0) {
+    if (g('Photon') < b('Photon')) {
+      items.push(adv('critical', `<strong>Remove ungifted Photon Bee(s)</strong> — instant conversion wastes fill potential. Replace with a Buoyant Bee or Music Bee.`));
+    } else {
+      items.push(adv('important', `Your <strong>Photon Bee</strong> is gifted, which is less harmful, but still not ideal for a blue hive. Consider replacing with a Music Bee or Buoyant Bee when you can.`));
+    }
+  }
+
+  // Non-blue filler bees
+  const badBees = [
+    ['Bomber','has no useful role in a blue hive.'],
+    ['Carpenter','has no useful role in a blue hive.'],
+    ['Demon','is not useful in a blue hive.'],
+    ['Lion','is not useful in a blue hive.'],
+    ['Precise','is not useful in a blue hive.'],
+    ['Spicy','is not useful in a blue hive.'],
+    ['Vector','is not useful in a blue hive.'],
+    ['Brave','is a red bee — not useful in a blue hive.'],
+    ['Rad','is a red bee — not useful in a blue hive.'],
+    ['Rascal','is a red bee — not useful in a blue hive.'],
+    ['Demo','is not useful in a blue hive.'],
+    ['Fire','is not useful in a blue hive.'],
+    ['Honey','is not useful in a blue hive.'],
+    ['Rage','is not useful in a blue hive.'],
+    ['Riley','is not useful in a blue hive.'],
+    ['Crimson','is not useful in a blue hive.'],
+  ];
+  for (const [bee, msg] of badBees) {
+    if (b(bee) > 0) items.push(adv('critical', `<strong>Remove ${bee} Bee</strong> — it ${msg} Replace with a Buoyant Bee.`));
+  }
+
+  // Core bees check
+  const coreBees = ['Bumble','Cool','Looker','Commander','Bubble','Bucko','Ninja','Bear','Festive','Tabby','Basic'];
+  for (const bee of coreBees) {
+    if (b(bee) === 0) {
+      items.push(adv('important', `You are missing <strong>${bee} Bee</strong>, which is a core blue hive bee. Add one when possible.`));
+    }
+  }
+
+  const musicCount = b('Music');
+  if (musicCount < 3) {
+    items.push(adv('critical', `You have <strong>${musicCount} Music Bee(s)</strong> — you need at least 3, ideally 4. Music Bees produce Melody tokens and grant +25% pollen (gifted). Add more immediately.`));
+  } else if (musicCount === 3) {
+    items.push(adv('info', `You have <strong>3 Music Bees</strong>. This can work if your focus and melody uptimes are consistently good, but 4 is recommended for reliable uptime.`));
+  } else if (musicCount >= 4) {
+    items.push(adv('good', `You have <strong>${musicCount} Music Bees</strong> — good. This supports strong Melody and Focus uptime.`));
+  }
+
+  // Buoyant / Tadpole counts
+  const buoy = b('Buoyant');
+  const tad = b('Tadpole');
+  if (stage !== 'diamond') {
+    if (buoy < 8) {
+      items.push(adv('important', `You have <strong>${buoy} Buoyant Bee(s)</strong>. Buoyant Bee is your primary blue hive filler — work toward 18–20 as an end goal. Keep replacing filler bees as you get the honey.`));
+    } else if (buoy < 15) {
+      items.push(adv('info', `You have <strong>${buoy} Buoyant Bees</strong>. Keep working toward 18–20 as an end goal by replacing other filler bees.`));
+    } else {
+      items.push(adv('good', `You have <strong>${buoy} Buoyant Bees</strong> — great fill foundation.`));
+    }
+
+    if (tad < 7) {
+      items.push(adv('important', `You have <strong>${tad} Tadpole Bee(s)</strong>. You need at least 7 Tadpole Bees — they spawn bubbles which are your main source of blue pollen for filling. Work toward 10 as a base.`));
+    } else if (tad >= 7 && tad <= 10) {
+      items.push(adv('good', `You have <strong>${tad} Tadpole Bees</strong> — within the healthy range for most fill situations.`));
+    } else if (tad > 13) {
+      items.push(adv('info', `You have <strong>${tad} Tadpole Bees</strong> — that's on the high side. If you are overfilling, consider swapping some Tadpole Bees back to Buoyant Bees (minimum 7 Tadpole Bees).`));
+    }
+  }
+
+  // Situational bees
+  const macro = state.macro === 'yes';
+  const tadAlt = state.tadAlt === 'yes';
+
+  if (b('Fuzzy') > 0) {
+    if (tadAlt) {
+      items.push(adv('important', `<strong>Fuzzy Bee</strong> is in your hive, but you have a Tad Alt. Remove Fuzzy Bee and replace with a Buoyant Bee — your alt covers what Fuzzy Bee provides.`));
+    } else if (macro) {
+      items.push(adv('good', `<strong>Fuzzy Bee</strong> is useful when macroing without a Tad Alt. Keep it.`));
+    } else {
+      items.push(adv('good', `<strong>Fuzzy Bee</strong> is a solid hive bee — keep it.`));
+    }
+  } else {
+    if (tadAlt) {
+      items.push(adv('info', `You do not have a <strong>Fuzzy Bee</strong>, but since you have a Tad Alt, this is fine — your alt covers what Fuzzy Bee would provide.`));
+    } else {
+      items.push(adv('important', `You do not have a <strong>Fuzzy Bee</strong>. It is recommended to always have 1 Fuzzy Bee in your hive unless you have a Tad Alt or are in a high-level macro server that does not require one.`));
+    }
+  }
+
+  if (b('Windy') > 0) {
+    if (macro && !tadAlt) {
+      items.push(adv('important', `<strong>Windy Bee</strong> can be problematic when macroing without a Tad Alt — its tornado removes haste stacks. Consider removing it.`));
+    } else if (!macro) {
+      items.push(adv('good', `<strong>Windy Bee</strong> is great for active play — keep it.`));
+    }
+  } else if (!macro) {
+    items.push(adv('info', `For active play, <strong>Windy Bee</strong> is a strong addition to your hive if you can get one.`));
+  }
+
+  if (b('Digital') > 0) {
+    items.push(adv('info', `<strong>Digital Bee</strong> is powerful for active play. Only consider removing it if you rarely play actively.`));
+  }
+
+  if (b('Frosty') > 0) {
+    items.push(adv('info', `<strong>Frosty Bee</strong> is only useful for Blue Bomb Pollen leaderboard grinding. If you are not actively grinding pollen leaderboards, replace it with a Buoyant Bee.`));
+  }
+
+  if (b('Vicious') > 0) {
+    items.push(adv('info', `<strong>Vicious Bee</strong> can be kept if you want some damage output or are still working toward getting enough Polar Power, but it is worse for honey production than a blue-focused bee. Once you no longer need it, swap it for a bee that better fits your hive's needs.`));
+  }
+
+  if (b('Puppy') > 0) {
+    const puppyLevel = parseInt(hiveLevel) || 0;
+    if (g('Puppy') === 0) {
+      items.push(adv('important', `<strong>Puppy Bee</strong> is ungifted. Ungifted Puppy Bee provides minimal value — remove it and replace with a Buoyant Bee unless you plan to gift it soon.`));
+    } else if (puppyLevel >= 20) {
+      const puppyReplacement = stage === 'diamond'
+        ? 'a Buoyant Bee, Tadpole Bee, or Diamond Bee'
+        : 'a Buoyant Bee or Tadpole Bee';
+      items.push(adv('info', `<strong>Gifted Puppy Bee</strong>: unless it is equipped with Reindeer Antlers beequip and being used as a Focus source, consider replacing it with ${puppyReplacement}.`));
+    }
+  }
+
+  if (b('Shy') > 0 && tad < 11) {
+    items.push(adv('info', `<strong>Shy Bee</strong> is only recommended when you already have 11–12 Tadpole Bees and are still underfilling. With ${tad} Tadpole Bees, replacing Shy Bee with a Buoyant Bee is likely better.`));
+  }
+
+
+  if (items.length === 0 || items.every(i => i.type === 'good' || i.type === 'info' || i.type === 'neutral')) {
+    items.push(adv('good', `Your hive composition looks solid overall — keep refining your fill balance between Buoyants and Tadpoles.`));
+  }
+
+  return items;
+}
+
+// ============================================================
+// FILL ANALYSIS
+// ============================================================
+function analyzeFill(bees, stage) {
+  const items = [];
+  if (stage === 'pre-blue') return items;
+  const fill = state.fill;
+  const tad = bees['Tadpole']?.count || 0;
+  const buoy = bees['Buoyant']?.count || 0;
+
+  items.push(adv('info', `<strong>Always ensure</strong> your nectars are full and Bubble Bloat is maxed before diagnosing fill issues. Polar Power should be at minimum 1,000 (1,500+ recommended) for consistent buff uptime.`));
+
+  let diagFill = fill;
+  if (fill === 'unknown' || !fill) {
+    if (tad > buoy * 0.6 && tad > 8) diagFill = 'overfilling';
+    else if (buoy > 0 && tad < 7) diagFill = 'underfilling';
+    else diagFill = 'good';
+    items.push(adv('neutral', `You selected "Don't Know" for fill. Based on your hive composition (${tad} Tadpoles, ${buoy} Buoyants), your fill appears to be <strong>${diagFill === 'good' ? 'reasonable' : diagFill}</strong>.`));
+  }
+
+  if (diagFill === 'underfilling') {
+    items.push(adv('important', `<strong>Underfilling detected.</strong> Try these fixes in order:<br>1. Swap some Buoyant Bees for Tadpole Bees (max 13 Tadpole Bees)<br>2. Level up your Tadpole Bees (bubble spawns scale with level)<br>3. Gift Tadpole Bees<br>4. Min-max your SSA stats for Blue Pollen<br>5. Add Shy Bee only if you already have 11–12 Tadpole Bees`));
+  } else if (diagFill === 'overfilling') {
+    items.push(adv('important', `<strong>Overfilling detected.</strong> Try these fixes in order:<br>1. Swap some Tadpole Bees for Buoyant Bees (minimum 7 Tadpole Bees)<br>2. Swap Shocked Bee for Exhausted Bee (Exhausted Bee's gifted bonus adds capacity)<br>3. Increase Blessing (RBC Blessing Boost)<br>4. Get Mondo Buff via Attack Alt rotation`));
+  } else {
+    items.push(adv('good', `Your fill seems balanced. After any hive changes, monitor your hourly report for at least 2 hours before making further adjustments.`));
+  }
+
+  return items;
+}
+
+// ============================================================
+// BUFF SOURCES ANALYSIS
+// ============================================================
+function analyzeBuffSources(bees, stage) {
+  const items = [];
+  if (stage === 'pre-blue') return items;
+  const b = (name) => bees[name]?.count || 0;
+  const g = (name) => bees[name]?.gifted || 0;
+
+  // Focus
+  // Looker Bee, Commander Bee, Music Bee each produce Focus
+  // Puppy Bee with Reindeer Antlers also produces Focus (but we can't know about beequips)
+  let focusSources = 0;
+  if (b('Looker') > 0) focusSources++;
+  if (b('Commander') > 0) focusSources++;
+  focusSources += b('Music');
+  if (focusSources < 3) {
+    items.push(adv('critical', `<strong>Focus sources: ${focusSources}</strong> (Looker Bee, Commander Bee, and Music Bees produce Focus) — you need at least 3–4 for consistent uptime. Add Music Bees and ensure you have both Looker Bee and Commander Bee. Reindeer Antlers beequip also provides Focus and can help cover any shortfall.`));
+  } else if (focusSources < 5) {
+    items.push(adv('info', `<strong>Focus sources: ${focusSources}</strong> — this is workable. 5+ sources is the target for reliable uptime. If you are short, a Reindeer Antlers beequip can supplement Focus production.`));
+  } else {
+    items.push(adv('good', `<strong>Focus sources: ${focusSources}</strong> — looking strong.`));
+  }
+
+  // Melody — Music Bee only (from bee ability)
+  const melodySources = b('Music');
+  if (melodySources < 3) {
+    items.push(adv('critical', `<strong>Melody sources: ${melodySources} Music Bee(s)</strong> — you need at least 3. Melody is produced by Music Bee abilities. Some beequips like Charm Bracelet can help supplement Melody, but Music Bees are the primary source.`));
+  } else if (melodySources === 3) {
+    items.push(adv('info', `<strong>Melody sources: 3 Music Bees</strong> — acceptable if your uptimes are consistent. 4 Music Bees is recommended for reliability. Charm Bracelet beequip can also help supplement Melody.`));
+  } else {
+    items.push(adv('good', `<strong>Melody sources: ${melodySources} Music Bees</strong> — solid.`));
+  }
+
+  // Haste — Hasty Bee, Shocked Bee, Ninja Bee produce Haste
+  // Note: Photon Bee produces haste but should be removed from hive so not counted
+  let hasteSources = 0;
+  if (b('Hasty') > 0) hasteSources++;
+  if (b('Shocked') > 0) hasteSources++;
+  if (b('Ninja') > 0) hasteSources++;
+  if (hasteSources < 2) {
+    items.push(adv('important', `<strong>Haste sources: ${hasteSources}</strong> (Hasty Bee, Shocked Bee, and Ninja Bee produce Haste) — aim for at least 3. Toy Drum beequip can also help supplement Haste production.`));
+  } else if (hasteSources < 3) {
+    items.push(adv('info', `<strong>Haste sources: ${hasteSources}</strong> — aim for 3+. Toy Drum beequip can help cover any remaining gap.`));
+  } else {
+    items.push(adv('good', `<strong>Haste sources: ${hasteSources}</strong> — good.`));
+  }
+
+  // Token Link — Exhausted Bee, Shocked Bee, Music Bee produce Token Link
+  let tlSources = 0;
+  if (b('Exhausted') > 0) tlSources++;
+  if (b('Shocked') > 0) tlSources++;
+  tlSources += b('Music');
+  if (tlSources < 4) {
+    items.push(adv('important', `<strong>Token Link sources: ${tlSources}</strong> (Exhausted Bee, Shocked Bee, and Music Bees produce Token Link) — aim for 4+. Having Exhausted Bee and 4 Music Bees is ideal. Beequips can also supplement Token Link production.`));
+  } else if (tlSources < 5) {
+    items.push(adv('info', `<strong>Token Link sources: ${tlSources}</strong> — solid. 5+ is the target. Beequips can help cover any remaining shortfall.`));
+  } else {
+    items.push(adv('good', `<strong>Token Link sources: ${tlSources}</strong> — looking solid.`));
+  }
+
+  // Baby Love — Gifted Tadpole Bees (each = 0.5) and Baby Bees (gifted OR ungifted, each = 1)
+  const giftedTads = bees['Tadpole']?.gifted || 0;
+  const babybees = bees['Baby']?.count || 0;
+  const totalBL = giftedTads * 0.5 + babybees;
+  if (totalBL < 3) {
+    // Less than 6 gifted tads equivalent — Baby Love is genuinely low
+    items.push(adv('important', `<strong>Baby Love check:</strong> You have ${giftedTads} Gifted Tadpole Bees and ${babybees} Baby Bees — Baby Love production is low. Keep Baby Bees in your hive until you have at least 6 Gifted Tadpole Bees. Note: both gifted and ungifted Baby Bees count equally for Baby Love.`));
+  } else {
+    items.push(adv('good', `<strong>Baby Love:</strong> ${giftedTads} Gifted Tadpole Bees and ${babybees} Baby Bees — Baby Love coverage is sufficient.`));
+  }
+
+  return items;
+}
+
+// ============================================================
+// SSA ANALYSIS
+// ============================================================
+function analyzeSSA(ssaHas, passives, ssaValues, stage, hiveLevel) {
+  const items = [];
+  if (!ssaHas) {
+    items.push(adv('critical', `<strong>You do not have an SSA.</strong> Getting a Pop Star Supreme Star Amulet is your #1 priority. Without it, do not switch to a blue hive.`));
+    return items;
+  }
+
+  const hasPopStar = passives.includes('pop');
+  const hasDouble = passives.length >= 2;
+  const lvl = parseInt(hiveLevel) || 0;
+
+  // Determine X/5 — the five meaningful stats are bp, cr, bar, cc, pol
+  const fiveStatIds = ['bp', 'cr', 'bar', 'cc', 'pol'];
+  const selectedCount = fiveStatIds.filter(id => state.ssaSelectedStats.has(id)).length;
+  const ssaFraction = `${selectedCount}/5`;
+  const ssaTypeLabel = hasDouble ? 'double passive' : 'solo Pop Star';
+
+  if (!hasPopStar) {
+    items.push(adv('critical', `<strong>Your SSA does not have Pop Star</strong> — Pop Star is absolutely essential for a blue hive. Your current SSA is unusable for blue. Keep your mixed hive and save up to re-roll or obtain a Pop Star SSA.`));
+    return items;
+  }
+
+  // Show the SSA type and stat count
+  items.push(adv('good', `Your SSA has <strong>Pop Star</strong> — essential for blue hive. You have a <strong>${ssaFraction} ${ssaTypeLabel} SSA</strong>.`));
+
+  if (hasDouble) {
+    const secondPassive = passives.find(p => p !== 'pop');
+    const badPassives = ['saw', 'scorching', 'gummy'];
+    if (secondPassive && badPassives.includes(secondPassive)) {
+      const passiveNames = { saw: 'Star Saw', scorching: 'Scorching Star', gummy: 'Gummy Star' };
+      items.push(adv('important', `Your second passive is <strong>${passiveNames[secondPassive]}</strong> — this passive is not useful for a blue hive. For your next SSA, aim for <strong>Pop Star + Guiding Star</strong> or <strong>Pop Star + Star Shower</strong> as your double passive combination.`));
+    } else {
+      items.push(adv('good', `You have a <strong>double passive SSA</strong> — this is better than a solo passive for sustained blue production.`));
+    }
+
+    // Level advice for double passive holders
+    if (selectedCount < 5) {
+      // Not yet a 5/5 — give upgrade advice based on level
+      if (lvl >= 20) {
+        items.push(adv('info', `At level ${lvl} with a ${ssaFraction} double passive SSA, work toward a <strong>5/5 double passive</strong> (Blue Pollen %, Convert Rate ×, Bee Ability Rate %, Critical Chance %, Pollen %) before prioritizing further leveling.`));
+      } else {
+        items.push(adv('info', `Work toward a <strong>5/5 double passive SSA</strong> (Blue Pollen %, Convert Rate ×, Bee Ability Rate %, Critical Chance %, Pollen %) when you can. Upgrading from ${ssaFraction} to 5/5 is recommended after level 20.`));
+      }
+    } else {
+      // Already 5/5
+      items.push(adv('good', `You have a <strong>5/5 double passive SSA</strong> — excellent. Focus on maximizing your stat values, especially Blue Pollen % and Convert Rate ×.`));
+    }
+  } else {
+    // Solo passive
+    if (lvl >= 16) {
+      items.push(adv('important', `You have a <strong>${ssaFraction} solo Pop Star SSA</strong>. At your level, working toward a <strong>4/5 or 5/5 double passive</strong> SSA (Pop Star + Guiding Star or Pop Star + Star Shower) is a major upgrade — a 4/5 or 5/5 double passive beats a 5/5 solo Pop Star. Note: a 3/5 double passive is worse than a 5/5 solo, so only swap if the double passive has 4 or 5 of the required stats (Blue Pollen %, Convert Rate ×, Bee Ability Rate %, Critical Chance %, Pollen %). Save 7–8t before attempting.`));
+    } else {
+      items.push(adv('info', `You have a <strong>${ssaFraction} solo Pop Star SSA</strong>. At level 15–16, start saving up for a 5/5 solo passive SSA, then work toward a double passive (Pop Star + Guiding Star or Pop Star + Star Shower) — a 4/5 or 5/5 double passive beats a 5/5 solo, but only swap to a double passive if it has 4 or 5 of the required stats.`));
+    }
+  }
+
+  // Stat quality from selected stats
+  const bp = ssaValues['bp'] || null;
+  const cr = ssaValues['cr'] || null;
+  if (bp !== null && cr !== null) {
+    let quality = '';
+    if (bp >= 55 && cr >= 1.18) quality = 'Excellent';
+    else if (bp >= 40 && cr >= 1.10) quality = 'Good';
+    else if (bp >= 25 && cr >= 1.05) quality = 'Decent';
+    else quality = 'Weak';
+
+    const qColor = { Excellent: 'good', Good: 'good', Decent: 'info', Weak: 'important' }[quality];
+    items.push(adv(qColor, `SSA stats quality: <strong>${quality}</strong> — Blue Pollen: ${bp}%, Convert Rate: ${cr}x. Stat priority: Blue Pollen % > Convert Rate > Bee Ability Rate > Critical Chance > Pollen %.`));
+
+    if (quality === 'Weak') {
+      items.push(adv('important', `Your SSA stats are below the useful threshold. Consider rolling for better Blue Pollen and Convert Rate. <strong>Never keep an SSA without both Blue Pollen and Convert Rate stats.</strong>`));
+    }
+  } else if (bp !== null || cr !== null) {
+    items.push(adv('important', `<strong>Stat priority reminder:</strong> Blue Pollen % > Convert Rate × > Bee Ability Rate % > Critical Chance % > Pollen %. Your SSA should have both Blue Pollen and Convert Rate — these are must-haves.`));
+  } else {
+    items.push(adv('neutral', `<strong>Stat priority reminder:</strong> Blue Pollen % > Convert Rate × > Bee Ability Rate % > Critical Chance % > Pollen %. Make sure your SSA has both Blue Pollen and Convert Rate.`));
+  }
+
+  return items;
+}
+
+// ============================================================
+// GEAR ANALYSIS
+// ============================================================
+function analyzeGear(stage, hiveLevel) {
+  const items = [];
+  const mask = state.mask || '';
+  const belt = state.belt || '';
+  const collector = state.collector || '';
+  const backpack = state.backpack || '';
+  const level = parseInt(hiveLevel) || 0;
+  const hasTidePopper = collector === 'Tide Popper';
+
+  // Mask — only suggest upgrades
+  if (mask === 'Bubble Mask') {
+    items.push(adv('info', `Work toward the <strong>Diamond Mask</strong> as your next mask upgrade (requires 5 Diamond Eggs to craft).`));
+  } else if (mask && mask !== 'Diamond Mask' && mask !== 'Demon Mask' && mask !== 'Gummy Mask') {
+    items.push(adv('important', `Work toward <strong>Bubble Mask → Diamond Mask</strong>. The Diamond Mask is the best mask for blue hive and a major upgrade priority.`));
+  }
+
+  // Belt — only suggest upgrades
+  if (belt === 'Petal Belt') {
+    items.push(adv('info', `Work toward <strong>Coconut Belt</strong> for the best belt stats (+25% capacity, +20 convert amount, +10% Gifted Bee Pollen).`));
+  } else if (belt && belt !== 'Coconut Belt') {
+    items.push(adv('important', `Work toward <strong>Petal Belt → Coconut Belt</strong> for capacity and convert amount bonuses.`));
+  }
+
+  // Backpack — only suggest upgrades
+  if (backpack === 'Porcelain Port-O-Hive') {
+    items.push(adv('info', `<strong>Coconut Canister</strong> is the next backpack upgrade from Porcelain Port-O-Hive.`));
+  } else if (backpack === 'Blue Port-O-Hive') {
+    items.push(adv('info', `Work toward <strong>Porcelain Port-O-Hive</strong>, then <strong>Coconut Canister</strong>.`));
+  } else if (backpack === 'Other') {
+    items.push(adv('important', `Work toward <strong>Port-O-Hive</strong> and upgrade along the Port-O-Hive line toward <strong>Coconut Canister</strong>.`));
+  }
+
+  // Collector — only suggest upgrades
+  if (!hasTidePopper) {
+    if (collector === 'Petal Wand') {
+      items.push(adv('info', `Work toward <strong>Tide Popper</strong> as your next collector upgrade when you can afford it.`));
+    } else if (collector === 'Porcelain Dipper') {
+      items.push(adv('info', `Work toward <strong>Petal Wand</strong>, then <strong>Tide Popper</strong>.`));
+    } else if (collector === 'Dark Scythe' || collector === 'Gummyballer') {
+      items.push(adv('important', `<strong>${collector}</strong> is not well-suited for blue hive. Switch to <strong>Petal Wand</strong> and upgrade to <strong>Tide Popper</strong> when you can afford it.`));
+    } else if (collector === 'Other') {
+      items.push(adv('important', `Work toward <strong>Porcelain Dipper → Petal Wand → Tide Popper</strong> for your collector.`));
+    }
+  }
+
+  // Planters — only suggest what's missing
+  if (state.hydroPlanter) {
+    // Already have it — no message needed
+  } else if (stage !== 'pre-blue') {
+    items.push(adv('info', `<strong>Hydroponic Planter</strong> is very good at maintaining a strong nectar upkeep. Get it when you can.`));
+  }
+
+  if (state.clayPlanter && state.hydroPlanter && !state.petalPlanter) {
+    items.push(adv('info', `You have both the Blue Clay Planter and Hydroponic Planter — work toward unlocking the <strong>Petal Planter</strong> whenever you are able.`));
+  } else if (!hasTidePopper && !state.petalPlanter && stage !== 'pre-blue' && stage !== 'early-blue') {
+    items.push(adv('info', `<strong>Petal Planter</strong> helps with nectars and is a good mid-game priority. Work toward <strong>Tide Popper</strong> as your collector when you can afford it — usually around level 18 or later, and especially if you plan to stay blue for a while.`));
+  } else if (state.petalPlanter && !hasTidePopper) {
+    items.push(adv('info', `<strong>Tide Popper</strong> is the best collector for blue hive. Work toward it when you can afford it — usually around level 18 or later, and especially if you plan to stay blue for a while longer.`));
+  }
+
+  return items;
+}
+
+// ============================================================
+// GIFTING & LEVELING ANALYSIS
+// ============================================================
+function analyzeGifting(bees, stage, hiveLevel) {
+  const items = [];
+  if (stage === 'pre-blue') return items;
+  const level = parseInt(hiveLevel) || 0;
+
+  const totalBees = Object.values(bees).reduce((s,b) => s + b.count, 0);
+  const giftedTotal = Object.values(bees).reduce((s,b) => s + b.gifted, 0);
+  const giftedPct = totalBees > 0 ? Math.round((giftedTotal / totalBees) * 100) : 0;
+  const isFullyGifted = giftedPct >= 100;
+
+  if (isFullyGifted) {
+    items.push(adv('good', `You are <strong>100% gifted</strong> — outstanding. Your gifted hive bonuses are fully active.`));
+  } else if (giftedPct >= 85) {
+    items.push(adv('good', `You are <strong>${giftedPct}% gifted</strong> — excellent. Keep working toward 100% gifted.`));
+    // Give personalized order based on ungifted bees
+    const ungiftedOrder = buildGiftingOrder(bees);
+    if (ungiftedOrder.length > 0) {
+      items.push(adv('info', `<strong>Gifting priority for your remaining ungifted bees:</strong> ${ungiftedOrder.join(' → ')}.`));
+    }
+  } else if (giftedPct >= 60) {
+    items.push(adv('info', `You are <strong>${giftedPct}% gifted</strong>.`));
+    const ungiftedOrder = buildGiftingOrder(bees);
+    if (ungiftedOrder.length > 0) {
+      items.push(adv('info', `<strong>Gifting priority for your hive:</strong> ${ungiftedOrder.join(' → ')}.`));
+    }
+  } else {
+    items.push(adv('important', `You are <strong>${giftedPct}% gifted</strong>. Gifting has a large impact on hive performance.`));
+    const ungiftedOrder = buildGiftingOrder(bees);
+    if (ungiftedOrder.length > 0) {
+      items.push(adv('important', `<strong>Gifting priority for your hive:</strong> ${ungiftedOrder.join(' → ')}.`));
+    }
+  }
+
+  if (level < 13) {
+    items.push(adv('info', `At level ${level}: focus on filling all hive slots with core blue bees and gifting as you go.`));
+  } else if (level >= 13 && level < 16) {
+    items.push(adv('info', `At level ${level}: target a <strong>5/5 solo passive Pop Star SSA</strong>. Save 7–8t before attempting (roughly 1 in 756 chance).`));
+  } else if (level >= 16 && level < 19) {
+    const hasDouble = state.ssaPassives.length >= 2;
+    if (!hasDouble) {
+      items.push(adv('important', `At level ${level}: work toward a <strong>4/5 or 5/5 double passive SSA</strong> (Pop Star + Guiding Star or Pop Star + Star Shower). A 4/5 or 5/5 double passive beats a 5/5 solo Pop Star — but only swap if the double passive has 4 or 5 of the required stats (Blue Pollen %, Convert Rate ×, Bee Ability Rate %, Critical Chance %, Pollen %). This is a major milestone — prioritize it before level 20.`));
+    } else {
+      items.push(adv('info', `Since you already have a double passive SSA, keep leveling your bees and maximizing your gifted percentage.`));
+    }
+  } else if (level >= 19) {
+    if (stage === 'diamond') {
+      // Diamond meta users — don't tell them to transition, they're already there
+      if (!isFullyGifted) {
+        items.push(adv('info', `At level ${level}: aim to be fully gifted and continue optimizing your diamond hive.`));
+      }
+    } else {
+      if (!isFullyGifted) {
+        items.push(adv('info', `At level ${level}: aim to be fully gifted at level 20. Consider transitioning to the diamond meta for better honey production.`));
+      } else {
+        items.push(adv('info', `At level ${level}: consider transitioning to the diamond meta for better honey production.`));
+      }
+    }
+  }
+
+  return items;
+}
+
+// Build personalized gifting order from the player's actual hive bees
+function buildGiftingOrder(bees) {
+  // Priority order for gifting
+  const GIFTING_PRIORITY = ['Buoyant','Tadpole','Music','Bumble','Bubble','Bucko','Commander','Cool','Festive','Tabby','Bear','Ninja','Looker','Baby','Diamond','Fuzzy','Shocked','Exhausted','Hasty'];
+  const result = [];
+  for (const bee of GIFTING_PRIORITY) {
+    const count = bees[bee]?.count || 0;
+    const gifted = bees[bee]?.gifted || 0;
+    if (count > 0 && gifted < count) {
+      result.push(`${bee} Bee`);
+    }
+  }
+  return result;
+}
+
+// ============================================================
+// DIAMOND ANALYSIS
+// ============================================================
+function analyzeDiamond(bees, stage, hiveLevel) {
+  const items = [];
+  const b = (name) => bees[name]?.count || 0;
+  const level = parseInt(hiveLevel) || 0;
+  const diamondCount = b('Diamond');
+
+  if (stage === 'diamond') {
+    items.push(adv('info', `<strong>Diamond Meta:</strong> You are running the diamond hive. Diamond Bees have the "Shimmering Honey" passive (+25% bonus honey per bee, +2.5% per level, doubled when gifted — up to +150% at gifted level 20).`));
+
+    items.push(adv('info', `<strong>Diamond Placement:</strong> Put Diamond Bees toward the center of your hive. Center-layer bees convert roughly 1.1× faster than top-layer bees.`));
+
+    const tadAlt = state.tadAlt === 'yes';
+    if (!tadAlt) {
+      items.push(adv('info', `A <strong>Tad Alt</strong> is strongly recommended for diamond meta. If you macro in dedicated high level macro servers, other players' Tadpole Alts can contribute to fill — but your own alt is better for consistency.`));
+    } else {
+      items.push(adv('good', `You have a <strong>Tad Alt</strong> — great for maintaining fill in the diamond meta.`));
+    }
+
+    items.push(adv('neutral', `<strong>Ratio testing:</strong> No single ratio works for everyone. The standard is roughly 15 Buoyant / 10 Diamond / 7–8 Tadpole. More Diamonds = less fill but more Honey at Hive. Test 24-hour sessions to find your optimal ratio.`));
+
+  } else if (stage === 'late-standard' && level >= 18) {
+    items.push(adv('info', `<strong>Diamond Meta</strong> is a future consideration. It involves replacing a mix of Buoyants AND Tadpoles with Diamond Bees (not just Buoyants). It requires level 20+, decent beequips, and ideally a Tad Alt or a high level macro server.`));
+  }
+
+  return items;
+}
+
+// ============================================================
+// NEXT GOALS
+// ============================================================
+function buildNextGoals(bees, stage, hiveLevel, hiveSlots, ssaHas) {
+  const goals = [];
+  const b = (name) => bees[name]?.count || 0;
+  const level = parseInt(hiveLevel) || 0;
+  const slots = parseInt(hiveSlots) || 25;
+  const macro = state.macro === 'yes';
+  const hasDouble = state.ssaPassives.length >= 2;
+  const hasTidePopper = state.collector === 'Tide Popper';
+
+  const totalBees = Object.values(bees).reduce((s,bee) => s + bee.count, 0);
+  const giftedTotal = Object.values(bees).reduce((s,bee) => s + bee.gifted, 0);
+  const isFullyGifted = totalBees > 0 && giftedTotal >= totalBees;
+
+  if (stage === 'pre-blue') {
+    goals.push('Get a Pop Star SSA — this is your #1 priority before anything else.');
+    if (slots < 50) goals.push(`Unlock more hive slots — you have ${slots}, work toward 50.`);
+    goals.push('Work toward Bubble Mask → Diamond Mask.');
+    goals.push('Work toward Petal Belt → Coconut Belt.');
+    goals.push('Build up gifted bee types to support SSA progression.');
+    return goals.slice(0,6);
+  }
+
+  if (stage === 'early-blue') {
+    const tad = b('Tadpole');
+    const buoy = b('Buoyant');
+    const music = b('Music');
+    if (tad < 10) goals.push(`Get more Tadpole Bees — you have ${tad}, work toward 10.`);
+    if (buoy < 12) goals.push(`Get more Buoyant Bees — you have ${buoy}, working toward 18–20 as your end goal.`);
+    if (music < 4) goals.push(`Get to 4 Music Bees — you have ${music}.`);
+    if (slots < 50) goals.push(`Unlock remaining hive slots — you have ${slots}.`);
+    if (!state.mask || !state.mask.includes('Diamond')) goals.push('Work toward Diamond Mask (requires 5 Diamond Eggs).');
+    goals.push('Keep gifting your core bees: Buoyant Bee, Tadpole Bee, Music Bee.');
+    return goals.slice(0,6);
+  }
+
+  if (stage === 'standard') {
+    if (!state.mask || !state.mask.includes('Diamond')) goals.push('Get the Diamond Mask — the best mask for blue hive.');
+    if (!state.belt || state.belt !== 'Coconut Belt') goals.push('Work toward Coconut Belt (+25% capacity, +20 convert amount).');
+    if (!state.hydroPlanter) goals.push('Get a Hydroponic Planter for nectar upkeep.');
+    if (!hasDouble && level >= 16) goals.push('Work toward a 4/5 or 5/5 double passive SSA (Pop Star + Guiding Star or Pop Star + Star Shower) — a 4/5 double passive beats a 5/5 solo Pop Star, but only swap if the double passive has 4 or 5 of the required stats.');
+    if (!isFullyGifted) goals.push('Continue gifting toward 85%+ gifted hive. Priority: Buoyant Bee → Tadpole Bee → Music Bee.');
+    if (!hasTidePopper && !state.petalPlanter) goals.push('Work toward Petal Planter for nectar upkeep, then Tide Popper as a collector upgrade when you can afford it.');
+    return goals.slice(0,6);
+  }
+
+  if (stage === 'late-standard') {
+    if (!hasTidePopper) goals.push('Work toward Tide Popper — the best collector for blue hive. Get it when you can afford it, especially if you plan to stay blue for a while longer.');
+    goals.push('Consider transitioning to the diamond meta for better honey production.');
+    if (!hasDouble) {
+      goals.push('Work toward a 5/5 double passive SSA (Pop Star + Guiding Star or Pop Star + Star Shower) with the following stats in priority order: Blue Pollen %, Convert Rate ×, Bee Ability Rate %, Critical Chance %, Pollen %.');
+    } else {
+      goals.push('Work toward a 5/5 double passive SSA with high Blue Pollen % and Convert Rate ×.');
+    }
+    goals.push('Optimize beequips: Pinecone (on Bumble Bee/Bear Bee), Elf Cap (on Diamond Bee), Candy Ring, Camphor Lip Balm.');
+    if (!isFullyGifted) goals.push('Ensure all bees are fully gifted at level 20.');
+    return goals.slice(0,6);
+  }
+
+  if (stage === 'diamond') {
+    goals.push('Test different Buoyant Bee / Diamond Bee / Tadpole Bee ratios over 24-hour sessions to find your optimal setup.');
+    goals.push('Gift all Diamond Bees — gifted Diamond Bee at level 20 gives up to +150% bonus honey.');
+    goals.push('Place Diamond Bees in the center of your hive for ~1.1× faster convert speed.');
+    if (state.tadAlt !== 'yes' && macro) goals.push('Get a Tad Alt to maintain fill while running more Diamond Bees.');
+    goals.push('Build Balloon Blessing to 80×+ before diagnosing fill.');
+    goals.push('Min-max beequips: Pinecone, Elf Cap, Candy Ring, Camphor Lip Balm, Snow Tiara.');
+    return goals.slice(0,6);
+  }
+
+  return goals;
+}
+
+// ============================================================
+// RENDER RESULTS
+// ============================================================
+function renderResults(stage, hiveLevel, sections, goals) {
+  document.querySelectorAll('.card').forEach(c => c.classList.remove('visible'));
+  document.getElementById('progress-wrap').style.display = 'none';
+
+  const stageInfo = {
+    'pre-blue':      { label:'Pre-Blue / Mixed Hive', badge:'badge-pre',      title:'Getting You Ready for Blue', subtitle:'Focus on the fundamentals before switching to a blue hive.' },
+    'early-blue':    { label:'Early Blue',            badge:'badge-early',    title:'Building Your Blue Foundation', subtitle:'You\'re starting out — every Buoyant and Tadpole counts.' },
+    'standard':      { label:'Standard Blue',         badge:'badge-standard', title:'Polishing Your Blue Hive', subtitle:'Core comp is set. Now focus on gifting, leveling, and SSA.' },
+    'late-standard': { label:'Late Game Blue',        badge:'badge-late',     title:'Pushing the Limits', subtitle:'Fully gifted and experienced — time to optimize everything.' },
+    'diamond':       { label:'Diamond Meta',          badge:'badge-diamond',  title:'Diamond Hive Analysis', subtitle:'Running the diamond meta — ratio and gifting are everything.' },
+  };
+
+  const info = stageInfo[stage] || stageInfo['standard'];
+  document.getElementById('results-stage-badge').textContent = info.label;
+  document.getElementById('results-stage-badge').className = `stage-badge ${info.badge}`;
+  document.getElementById('results-title').textContent = info.title;
+  document.getElementById('results-subtitle').textContent = info.subtitle;
+
+  const body = document.getElementById('results-body');
+  body.innerHTML = '';
+
+  const sectionTitles = {
+    hive: '🐝 Hive Composition',
+    fill: '📊 Fill & Balance',
+    buffs: '⚡ Buff Uptimes',
+    ssa: '⭐ Supreme Star Amulet',
+    gear: '🎒 Gear & Items',
+    gifting: '🎁 Gifting & Leveling',
+    diamond: '💎 Diamond Hive'
+  };
+
+  const dotSymbols = { critical:'!', important:'↑', good:'✓', info:'i', neutral:'·' };
+  const dotClasses = { critical:'dot-critical', important:'dot-important', good:'dot-good', info:'dot-info', neutral:'dot-neutral' };
+
+  for (const [key, items] of Object.entries(sections)) {
+    if (!items || items.length === 0) continue;
+    const secTitle = document.createElement('div');
+    secTitle.className = 'advice-section-title';
+    secTitle.textContent = sectionTitles[key] || key;
+    body.appendChild(secTitle);
+
+    const card = document.createElement('div');
+    card.className = 'advice-card';
+    for (const item of items) {
+      const row = document.createElement('div');
+      row.className = 'advice-item';
+      row.innerHTML = `<div class="advice-dot ${dotClasses[item.type]}">${dotSymbols[item.type]}</div><div class="advice-text">${item.text}</div>`;
+      card.appendChild(row);
+    }
+    body.appendChild(card);
+  }
+
+  if (goals && goals.length > 0) {
+    const goalsTitle = document.createElement('div');
+    goalsTitle.className = 'advice-section-title';
+    goalsTitle.textContent = '🎯 Next Goals';
+    body.appendChild(goalsTitle);
+
+    const goalsCard = document.createElement('div');
+    goalsCard.className = 'goals-card';
+    goalsCard.innerHTML = `<div class="goals-title">Your Personalized Roadmap</div>` +
+      goals.map((g, i) => `<div class="goal-item"><div class="goal-num">${i+1}</div><div class="goal-text">${g}</div></div>`).join('');
+    body.appendChild(goalsCard);
+  }
+
+  document.getElementById('results-section').style.display = 'block';
+  currentStep = 5;
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+// ============================================================
+// RESTART
+// ============================================================
+function restart() {
+  Object.assign(state, {
+    macro:null, tadAlt:null, fill:null, ssaHas:null, ssaPassives:[],
+    ssaStats:{}, ssaSelectedStats: new Set(),
+    mask:null, backpack:null, collector:null, belt:null, boots:null,
+    petalPlanter:false, hydroPlanter:false, clayPlanter:false, bees:{}
+  });
+
+  document.getElementById('hive-level').value = '';
+  document.getElementById('hive-slots').value = '';
+  document.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active','active-yes','active-no'));
+  document.getElementById('tad-alt-group').style.display = 'none';
+  document.getElementById('ssa-details').style.display = 'none';
+  document.querySelectorAll('.passive-btn').forEach(b => {
+    b.classList.remove('active','passive-disabled');
+  });
+  document.querySelectorAll('.gear-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.check-btn').forEach(b => b.classList.remove('checked'));
+
+  // Reset SSA stat tiles
+  buildSSAStats();
+  document.getElementById('stat-warning').classList.remove('visible');
+
+  // Reset bee inputs
+  for (const rarityBees of Object.values(BEES)) {
+    for (const bee of rarityBees) {
+      const id = beeId(bee);
+      const countEl = document.getElementById('count-' + id);
+      const giftedEl = document.getElementById('gifted-' + id);
+      if (countEl) countEl.value = 0;
+      if (giftedEl) giftedEl.value = 0;
+      const row = document.getElementById('row-' + id);
+      if (row) row.classList.remove('has-bees');
+    }
+  }
+  document.getElementById('bee-grand-total').textContent = '0';
+
+  document.getElementById('results-section').style.display = 'none';
+  document.getElementById('progress-wrap').style.display = 'block';
+  goTo(1);
+}
+
+// ============================================================
+// BOOT
+// ============================================================
+init();
+</script>
+</body>
+</html>

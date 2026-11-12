@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Supreme Star Amulet Rater for Blue Hives – Bee Swarm Simulator</title>
+<meta name="description" content="Free Bee Swarm Simulator tool: enter your Supreme Star Amulet passives and stats to score it for a blue hive."><link rel="canonical" href="https://bssoptimizer.github.io/amulet-rater/"><link rel="icon" type="image/png" href="/logo.png">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-0EQ60MCZPB"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-0EQ60MCZPB");</script>
+<style>
+:root{--bg:#0a1428;--panel:#101d38;--panel2:#15264a;--line:#223a66;--text:#e6eefc;--muted:#8fa4c8;--accent:#5aa9ff;--ink:#04122a;--bad:#ff8a8a}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.5 "Segoe UI",system-ui,-apple-system,Roboto,sans-serif}
+main{max-width:760px;margin:0 auto;padding:28px 16px 48px}
+h1{font-size:1.7rem;line-height:1.2;margin:0 0 6px;letter-spacing:-.01em}
+h2{font-size:1.1rem;margin:28px 0 4px}
+.sub,.hint,.rg,footer{color:var(--muted)}
+.sub{margin:0}
+.hint{margin:0 0 12px;font-size:.92rem}
+.grid{display:grid;gap:10px;grid-template-columns:1fr 1fr}
+.stats{display:grid;gap:10px;grid-template-columns:1fr}
+button{font:inherit;color:inherit}
+.toggle{display:flex;width:100%;justify-content:space-between;align-items:baseline;gap:8px;text-align:left;background:none;border:0;padding:0;cursor:pointer}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.pass{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px 14px;cursor:pointer;text-align:left}
+.pass[aria-pressed=true],.stat.on{border-color:var(--accent);background:var(--panel2)}
+.pass[aria-pressed=true]{box-shadow:inset 3px 0 0 var(--accent)}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.stat.on{box-shadow:inset 3px 0 0 var(--accent)}
+.stat.off .toggle,.pass:disabled{cursor:not-allowed;opacity:.5}
+.nm{font-weight:600}
+.rg{font-size:.85rem;white-space:nowrap}
+.ctl{display:flex;align-items:center;gap:10px;margin-top:10px}
+.ctl input[type=range]{flex:1;min-width:0;accent-color:var(--accent)}
+.ctl input:disabled{opacity:.35}
+.num{width:5.2rem;background:var(--bg);color:var(--text);border:1px solid var(--line);border-radius:6px;padding:6px 8px;font:inherit}
+.unit{color:var(--muted);font-size:.9rem}
+.lock{display:flex;justify-content:space-between;margin-bottom:10px;border-style:dashed}
+.lock span:last-child{color:var(--accent);font-weight:600}
+.primary,.ghost{border-radius:8px;padding:12px 20px;font-weight:600;cursor:pointer;border:1px solid var(--accent)}
+.primary{background:var(--accent);color:var(--ink);margin-top:20px}
+.primary:disabled{background:var(--panel);color:var(--muted);border-color:var(--line);cursor:not-allowed}
+.ghost{background:none;color:var(--accent)}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px}
+.actions .primary{margin-top:0}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+body.result header{margin-bottom:44px}
+.stat:not(.on) .ctl input:not(:disabled){opacity:.7}
+.label{font-size:1.5rem;font-weight:700;margin:0 0 20px}
+.tiles{display:grid;gap:10px;grid-template-columns:1fr}
+.tile{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+.tile .k{color:var(--muted);font-size:.9rem}
+.tile .v{font-size:2rem;font-weight:700;line-height:1.2}
+.tile.big{border-color:var(--accent);background:var(--panel2)}
+.warn{border-color:var(--bad)}
+.warn p{margin:6px 0 0}
+footer{margin-top:36px;font-size:.82rem}
+@media(min-width:700px){.grid{grid-template-columns:repeat(3,1fr)}.stats{grid-template-columns:1fr 1fr}.tiles{grid-template-columns:repeat(3,1fr)}h1{font-size:2rem}}
+nav.top{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px 16px;max-width:760px;margin:0 auto;padding:14px 16px;border-bottom:1px solid var(--line)}
+nav.top a{color:var(--text);text-decoration:none}
+nav.top .brand{font-weight:700;display:inline-flex;align-items:center;gap:8px}
+nav.top .brand img{border-radius:6px}
+nav.top span a{margin-left:16px;color:var(--muted)}
+nav.top a:hover{color:var(--accent)}
+section.info{margin-top:44px;padding-top:8px;border-top:1px solid var(--line)}
+section.info h2{margin-top:24px}
+section.info p,section.info li{color:var(--muted)}
+footer.site{text-align:center;margin-top:44px;padding:20px 16px;border-top:1px solid var(--line);color:var(--muted);font-size:.85rem}
+footer.site p{margin:4px 0}
+footer.site a{color:var(--accent)}
+</style>
+</head>
+<body>
+<nav class="top"><a class="brand" href="/"><img src="/logo.png" alt="" width="24" height="24">BSS Optimizer Tools</a><span><a href="/blue-hive-optimizer/">Blue Hive Optimizer</a><a href="/amulet-rater/">Amulet Rater</a></span></nav>
+<main>
+<header>
+  <h1>Supreme Star Amulet Rater</h1>
+  <p class="sub">Rate a Supreme Star Amulet for a blue hive.</p>
+</header>
+
+<section id="inputScreen">
+  <h2>Passives</h2>
+  <p class="hint" id="passHint"></p>
+  <div class="grid" id="passives"></div>
+
+  <h2>Stats</h2>
+  <p class="hint" id="statHint"></p>
+  <div class="card lock"><span>Capacity</span><span>x2.5 (guaranteed)</span></div>
+  <div class="stats" id="stats"></div>
+
+  <button type="button" class="primary" id="go" disabled>Rate amulet</button>
+</section>
+
+<section id="resultScreen" hidden>
+  <div id="resultBody" tabindex="-1"></div>
+  <div class="actions">
+    <button type="button" class="primary" id="again">Rate another amulet</button>
+    <button type="button" class="ghost" id="edit">Edit this amulet</button>
+  </div>
+</section>
+
+<section class="info">
+<h2>How the rating works</h2>
+<p>A Supreme Star Amulet always has a x2.5 Capacity bonus, one or two passives, and exactly five of nine possible stats. This tool scores that combination for a blue hive and gives you three results.</p>
+<ul>
+<li><strong>Desired stats:</strong> how many of the five stats that matter for a blue hive the amulet has: Blue Pollen, Convert Rate, Bee Ability Rate, Pollen, and Critical Chance.</li>
+<li><strong>Stat score:</strong> how strong those rolls are. Blue Pollen and Convert Rate count the most.</li>
+<li><strong>Blue hive score:</strong> an overall score that adds the passives to the stat score.</li>
+</ul>
+<h2>Passives for a blue hive</h2>
+<p>Pop Star is required for a blue hive, so an amulet without it gets no rating. Guiding Star and Star Shower only help when paired with Pop Star, and Star Shower is the stronger of the two. Gummy Star, Scorching Star, and Star Saw do not help a blue hive, but they do not hurt either.</p>
+<h2>Good to know</h2>
+<p>The scoring is based on the creator’s judgment and community experience, not official game data. Looking for more help with your hive? Try the <a href="/blue-hive-optimizer/">Blue Hive Optimizer</a>.</p>
+</section>
+</main>
+<footer class="site"><p><a href="/about/">About</a> · <a href="/contact/">Contact</a> · <a href="/privacy/">Privacy Policy</a></p><p>Unofficial fan site. Not affiliated with Onett or Roblox.</p></footer>
+
+<script>
+// ---- Scoring settings (edit numbers here) ----
+const CFG = {
+  weights: { blue: 40, convert: 38, ability: 10, pollen: 7, crit: 5 }, // blue hive stat weights, total 100
+  gatherMax: 2,          // Bee Gather Pollen bonus: 1 point at min roll, 2 at max roll
+  floor: 0.5,            // minimum roll counts for 50% of the weight, maximum for 100%
+  passive: { solo: 40, guiding: 47.5, shower: 50 }, // passives are 50 points: Pop Star 40, +Guiding Star 7.5, +Star Shower 10
+  statShare: 0.5         // stats make up this share of the blue hive score
+};
+const PASSIVES = ["Guiding Star","Pop Star","Star Shower","Gummy Star","Scorching Star","Star Saw"];
+const STATS = [
+  {id:"convert",name:"Convert Rate",min:1.05,max:1.25,step:0.01,pre:"x",suf:""},
+  {id:"pollen",name:"Pollen",min:5,max:20,step:1,pre:"+",suf:"%"},
+  {id:"white",name:"White Pollen",min:15,max:70,step:1,pre:"+",suf:"%"},
+  {id:"red",name:"Red Pollen",min:15,max:70,step:1,pre:"+",suf:"%"},
+  {id:"blue",name:"Blue Pollen",min:15,max:70,step:1,pre:"+",suf:"%"},
+  {id:"ability",name:"Bee Ability Rate",min:1,max:7,step:1,pre:"+",suf:"%"},
+  {id:"crit",name:"Critical Chance",min:1,max:7,step:1,pre:"+",suf:"%"},
+  {id:"gather",name:"Bee Gather Pollen",min:15,max:70,step:1,pre:"+",suf:"%"},
+  {id:"instant",name:"Instant Conversion",min:3,max:12,step:1,pre:"+",suf:"%"}
+];
+const $ = s => document.querySelector(s);
+const chosenPassives = new Set();
+const sel = {}; // stat id -> value
+const dec = s => (s.step < 1 ? 2 : 0);
+const show = (s, v) => (dec(s) ? v.toFixed(2) : String(v));
+const snap = (s, v) => {
+  v = Math.min(s.max, Math.max(s.min, v));
+  v = Math.round((v - s.min) / s.step) * s.step + s.min;
+  return +v.toFixed(2);
+};
+
+// ---- Build passives ----
+PASSIVES.forEach(name => {
+  const b = document.createElement("button");
+  b.type = "button"; b.className = "pass"; b.textContent = name; b.dataset.name = name;
+  b.setAttribute("aria-pressed", "false");
+  b.onclick = () => {
+    if (chosenPassives.has(name)) chosenPassives.delete(name);
+    else if (chosenPassives.size < 2) chosenPassives.add(name);
+    sync();
+  };
+  $("#passives").appendChild(b);
+});
+
+// ---- Build stats ----
+STATS.forEach(s => {
+  const el = document.createElement("div");
+  el.className = "stat off"; el.id = "stat-" + s.id;
+  el.innerHTML =
+    '<button type="button" class="toggle" aria-pressed="false"><span class="nm">' + s.name + '</span>' +
+    '<span class="rg">' + s.pre + show(s, s.min) + s.suf + ' to ' + s.pre + show(s, s.max) + s.suf + '</span></button>' +
+    '<div class="ctl"><input type="range" min="' + s.min + '" max="' + s.max + '" step="' + s.step + '" value="' + s.min + '" aria-label="' + s.name + ' value">' +
+    '<span class="unit">' + s.pre + '</span><input class="num" type="number" inputmode="decimal" min="' + s.min + '" max="' + s.max + '" step="' + s.step + '" value="' + show(s, s.min) + '" aria-label="' + s.name + ' value"><span class="unit">' + s.suf + '</span></div>';
+  const slider = el.querySelector("input[type=range]");
+  const num = el.querySelector(".num");
+  el.querySelector(".toggle").onclick = () => {
+    if (s.id in sel) delete sel[s.id];
+    else if (Object.keys(sel).length < 5) sel[s.id] = s.min;
+    sync();
+  };
+  // Setting a value selects the stat automatically (unless 5 are already chosen)
+  const pick = v => {
+    if (!(s.id in sel) && Object.keys(sel).length >= 5) return false;
+    sel[s.id] = snap(s, v);
+    return true;
+  };
+  slider.oninput = () => {
+    const was = s.id in sel;
+    if (!pick(parseFloat(slider.value))) { slider.value = s.min; return; }
+    num.value = show(s, sel[s.id]);
+    if (!was) sync(s.id);
+  };
+  num.oninput = () => {
+    const v = parseFloat(num.value);
+    if (!isNaN(v) && v >= s.min && v <= s.max) {
+      const was = s.id in sel;
+      if (!pick(v)) return;
+      slider.value = sel[s.id];
+      if (!was) sync(s.id);
+    }
+  };
+  num.onchange = () => {
+    let v = parseFloat(num.value);
+    if (isNaN(v)) {
+      if (!(s.id in sel)) { num.value = show(s, s.min); return; }
+      v = sel[s.id];
+    }
+    const was = s.id in sel;
+    if (!pick(v)) { num.value = show(s, s.min); return; }
+    num.value = show(s, sel[s.id]); slider.value = sel[s.id];
+    if (!was) sync();
+  };
+  $("#stats").appendChild(el);
+});
+
+// ---- Keep the screen in step with the choices ----
+function sync(keep) {
+  const pn = chosenPassives.size, sn = Object.keys(sel).length;
+  document.querySelectorAll(".pass").forEach(b => {
+    const on = chosenPassives.has(b.dataset.name);
+    b.setAttribute("aria-pressed", on);
+    b.disabled = !on && pn >= 2;
+  });
+  STATS.forEach(s => {
+    const el = $("#stat-" + s.id), on = s.id in sel;
+    el.classList.toggle("on", on); el.classList.toggle("off", !on && sn >= 5);
+    const t = el.querySelector(".toggle");
+    t.setAttribute("aria-pressed", on); t.disabled = !on && sn >= 5;
+    const slider = el.querySelector("input[type=range]"), num = el.querySelector(".num");
+    slider.disabled = num.disabled = !on && sn >= 5;
+    if (s.id !== keep) {
+      const v = on ? sel[s.id] : s.min;
+      slider.value = v; num.value = show(s, v);
+    }
+  });
+  $("#passHint").textContent = pn ? "Selected " + pn + " of 2. Tap again to deselect." : "Choose 1 or 2 passives.";
+  $("#statHint").textContent = "Tap a stat or drag its slider to add it. Choose exactly 5 (" + sn + " of 5 selected).";
+  $("#go").disabled = !(pn >= 1 && sn === 5);
+}
+
+// ---- Scoring ----
+function rate() {
+  if (!chosenPassives.has("Pop Star")) return null;
+  const shower = chosenPassives.has("Star Shower"), guiding = chosenPassives.has("Guiding Star");
+  const passivePts = shower ? CFG.passive.shower : guiding ? CFG.passive.guiding : CFG.passive.solo;
+  const label = shower ? "Double Pop Shower Amulet" : guiding ? "Double Pop Guiding Amulet" : "Solo Pop Star Amulet";
+  const portion = id => {
+    const s = STATS.find(x => x.id === id);
+    return CFG.floor + (1 - CFG.floor) * ((sel[id] - s.min) / (s.max - s.min));
+  };
+  let stat = 0, count = 0;
+  Object.keys(CFG.weights).forEach(id => {
+    if (id in sel) { stat += CFG.weights[id] * portion(id); count++; }
+  });
+  if ("gather" in sel) stat += CFG.gatherMax * portion("gather");
+  const blue = passivePts + stat * CFG.statShare;
+  return { label, count, stat: stat.toFixed(2), blue: blue.toFixed(2) };
+}
+
+// ---- Screens ----
+function showResult() {
+  const r = rate(), body = $("#resultBody");
+  if (!r) {
+    body.innerHTML = '<div class="tile warn"><h2 style="margin-top:0">No rating</h2><p>A Pop Star is required for an amulet to count for a blue hive. Keep rolling until you get one.</p></div>';
+  } else {
+    body.innerHTML = '<p class="label">' + r.label + '</p><div class="tiles">' +
+      '<div class="tile"><div class="k">Desired stats</div><div class="v">' + r.count + '/5</div></div>' +
+      '<div class="tile"><div class="k">Stat score</div><div class="v">' + r.stat + '%</div></div>' +
+      '<div class="tile big"><div class="k">Blue hive score</div><div class="v">' + r.blue + '%</div></div></div>';
+  }
+  document.body.classList.add("result");
+  $("#inputScreen").hidden = true; $("#resultScreen").hidden = false;
+  window.scrollTo(0, 0); body.focus();
+}
+function showInput() {
+  document.body.classList.remove("result");
+  $("#resultScreen").hidden = true; $("#inputScreen").hidden = false;
+  window.scrollTo(0, 0);
+}
+$("#go").onclick = showResult;
+$("#edit").onclick = showInput;
+$("#again").onclick = () => {
+  chosenPassives.clear();
+  Object.keys(sel).forEach(k => delete sel[k]);
+  sync(); showInput();
+};
+sync();
+</script>
+</body>
+</html>
