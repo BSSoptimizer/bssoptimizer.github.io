@@ -4,15 +4,17 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Supreme Star Amulet Rater for Blue Hives – Bee Swarm Simulator</title>
-<meta name="description" content="Free Bee Swarm Simulator tool: enter your Supreme Star Amulet passives and stats to score it for a blue hive."><link rel="canonical" href="https://bssoptimizer.github.io/amulet-rater/"><link rel="icon" type="image/png" href="/logo.png">
+<meta name="description" content="Free Bee Swarm Simulator tool: enter your Supreme Star Amulet passives and stats to score it for a blue hive."><link rel="canonical" href="https://bssoptimizer.github.io/amulet-rater/"><link rel="icon" type="image/png" href="/logo.png"><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-0EQ60MCZPB"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-0EQ60MCZPB");</script>
 <style>
-:root{--bg:#0a1428;--panel:#101d38;--panel2:#15264a;--line:#223a66;--text:#e6eefc;--muted:#8fa4c8;--accent:#5aa9ff;--ink:#04122a;--bad:#ff8a8a}
+:root{--bg:#0a0e1a;--panel:#0f1525;--panel2:#151d35;--line:rgba(74,158,255,0.2);--text:#e8edf8;--muted:#7a8ab0;--accent:#4a9eff;--ink:#fff;--bad:#ff4d6d}
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
-body{margin:0;background:var(--bg);color:var(--text);font:16px/1.5 "Segoe UI",system-ui,-apple-system,Roboto,sans-serif}
+body{margin:0;background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif;font-weight:400;font-size:16px;line-height:1.5;min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 80% 50% at 20% 10%,rgba(74,158,255,0.06) 0%,transparent 60%),radial-gradient(ellipse 60% 40% at 80% 80%,rgba(56,217,192,0.04) 0%,transparent 50%);pointer-events:none;z-index:0}
+main{position:relative;z-index:1}
 main{max-width:760px;margin:0 auto;padding:28px 16px 48px}
-h1{font-size:1.7rem;line-height:1.2;margin:0 0 6px;letter-spacing:-.01em}
+h1{font-size:clamp(28px,5vw,42px);font-weight:800;line-height:1.1;margin:0 0 12px;background:linear-gradient(135deg,#e8edf8 0%,#4a9eff 50%,#38d9c0 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 h2{font-size:1.1rem;margin:28px 0 4px}
 .sub,.hint,.rg,footer{color:var(--muted)}
 .sub{margin:0}
@@ -55,25 +57,36 @@ body.result header{margin-bottom:44px}
 .warn{border-color:var(--bad)}
 .warn p{margin:6px 0 0}
 footer{margin-top:36px;font-size:.82rem}
-@media(min-width:700px){.grid{grid-template-columns:repeat(3,1fr)}.stats{grid-template-columns:1fr 1fr}.tiles{grid-template-columns:repeat(3,1fr)}h1{font-size:2rem}}
-nav.top{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px 16px;max-width:760px;margin:0 auto;padding:14px 16px;border-bottom:1px solid var(--line)}
-nav.top a{color:var(--text);text-decoration:none}
+@media(min-width:700px){.grid{grid-template-columns:repeat(3,1fr)}.stats{grid-template-columns:1fr 1fr}.tiles{grid-template-columns:repeat(3,1fr)}}
+nav.top{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px 16px;max-width:960px;margin:0 auto;padding:14px 20px;border-bottom:1px solid var(--line);position:relative;z-index:1}
+nav.top a{color:#fff;text-decoration:none}
 nav.top .brand{font-weight:700;display:inline-flex;align-items:center;gap:8px}
 nav.top .brand img{border-radius:6px}
-nav.top span a{margin-left:16px;color:var(--muted)}
-nav.top a:hover{color:var(--accent)}
+nav.top a:hover{text-decoration:underline}
+nav.top .here{color:var(--muted)}
 section.info{margin-top:44px;padding-top:8px;border-top:1px solid var(--line)}
 section.info h2{margin-top:24px}
 section.info p,section.info li{color:var(--muted)}
-footer.site{text-align:center;margin-top:44px;padding:20px 16px;border-top:1px solid var(--line);color:var(--muted);font-size:.85rem}
-footer.site p{margin:4px 0}
-footer.site a{color:var(--accent)}
+section.info a{color:#fff;text-decoration:underline}
+footer.site{text-align:center;margin-top:44px;padding:20px 16px;border-top:1px solid var(--line);color:var(--muted);font-size:.85rem;position:relative;z-index:1}
+footer.site p{margin:4px 0;color:var(--muted)}
+footer.site a{color:#fff;text-decoration:underline}
+header{text-align:center;padding:20px 0 8px}
+.header-badge{display:inline-block;background:rgba(74,158,255,.12);border:1px solid rgba(74,158,255,.35);color:#4a9eff;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;padding:4px 12px;border-radius:20px;margin-bottom:16px}
+.sub{max-width:520px;margin:0 auto}
+.card,.tile{border-radius:16px}
+.num{font-family:'Space Mono',monospace;font-size:14px}
+.primary{background:linear-gradient(135deg,#2d7dd6,#4a9eff);color:#fff;border:0;box-shadow:0 4px 16px rgba(74,158,255,.25)}
+.primary:disabled{background:var(--panel);color:var(--muted);border:1px solid var(--line);box-shadow:none}
+.ghost{border-color:rgba(74,158,255,.35)}
+nav.top{max-width:760px;padding-left:16px;padding-right:16px}
 </style>
 </head>
 <body>
-<nav class="top"><a class="brand" href="/"><img src="/logo.png" alt="" width="24" height="24">BSS Optimizer Tools</a><span><a href="/blue-hive-optimizer/">Blue Hive Optimizer</a><a href="/amulet-rater/">Amulet Rater</a></span></nav>
+<nav class="top"><a class="brand" href="/"><img src="/logo.png" alt="" width="24" height="24">BSS Optimizer Tools</a><span class="here">Amulet Rater</span></nav>
 <main>
 <header>
+  <div class="header-badge">🐝 Bee Swarm Simulator</div>
   <h1>Supreme Star Amulet Rater</h1>
   <p class="sub">Rate a Supreme Star Amulet for a blue hive.</p>
 </header>
@@ -147,10 +160,18 @@ const snap = (s, v) => {
   return +v.toFixed(2);
 };
 
+const ICONS = {
+  "Pop Star": '<span style="color:#7ec8ff;font-size:15px;margin-right:4px;">★</span>',
+  "Guiding Star": '🌟 ',
+  "Star Shower": '✨ ',
+  "Star Saw": '<span style="color:#cccccc;font-size:15px;margin-right:4px;">★</span>',
+  "Scorching Star": '<span style="color:#ff4d4d;font-size:15px;margin-right:4px;">★</span>',
+  "Gummy Star": '<span style="color:#c98fcc;font-size:15px;margin-right:4px;">★</span>'
+};
 // ---- Build passives ----
 PASSIVES.forEach(name => {
   const b = document.createElement("button");
-  b.type = "button"; b.className = "pass"; b.textContent = name; b.dataset.name = name;
+  b.type = "button"; b.className = "pass"; b.innerHTML = ICONS[name] + name; b.dataset.name = name;
   b.setAttribute("aria-pressed", "false");
   b.onclick = () => {
     if (chosenPassives.has(name)) chosenPassives.delete(name);
