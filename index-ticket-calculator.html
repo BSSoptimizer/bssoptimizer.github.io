@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bee Swarm Simulator Ticket Calculator</title>
+<meta name="description" content="Free Bee Swarm Simulator tool: find out how many more tickets you need and how much honey they cost in the ticket shop."><link rel="canonical" href="https://bssoptimizer.github.io/ticket-calculator/"><link rel="icon" type="image/png" href="/logo.png"><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-0EQ60MCZPB"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-0EQ60MCZPB");</script>
+<style>
+:root{--bg:#0a0e1a;--panel:#0f1525;--panel2:#151d35;--line:rgba(74,158,255,0.2);--text:#e8edf8;--muted:#7a8ab0;--accent:#4a9eff;--ink:#fff;--bad:#ff4d6d}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif;font-weight:400;font-size:16px;line-height:1.5;min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 80% 50% at 20% 10%,rgba(74,158,255,0.06) 0%,transparent 60%),radial-gradient(ellipse 60% 40% at 80% 80%,rgba(56,217,192,0.04) 0%,transparent 50%);pointer-events:none;z-index:0}
+main{position:relative;z-index:1}
+main{max-width:760px;margin:0 auto;padding:28px 16px 48px}
+h1{font-size:clamp(28px,5vw,42px);font-weight:800;line-height:1.1;margin:0 0 12px;background:linear-gradient(135deg,#e8edf8 0%,#4a9eff 50%,#38d9c0 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+h2{font-size:1.1rem;margin:28px 0 4px}
+.sub,.hint,.rg,footer{color:var(--muted)}
+.sub{margin:0}
+.hint{margin:0 0 12px;font-size:.92rem}
+.grid{display:grid;gap:10px;grid-template-columns:1fr 1fr}
+.stats{display:grid;gap:10px;grid-template-columns:1fr}
+button{font:inherit;color:inherit}
+.toggle{display:flex;width:100%;justify-content:space-between;align-items:baseline;gap:8px;text-align:left;background:none;border:0;padding:0;cursor:pointer}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.pass{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px 14px;cursor:pointer;text-align:left}
+.pass[aria-pressed=true],.stat.on{border-color:var(--accent);background:var(--panel2)}
+.pass[aria-pressed=true]{box-shadow:inset 3px 0 0 var(--accent)}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.stat.on{box-shadow:inset 3px 0 0 var(--accent)}
+.stat.off .toggle,.pass:disabled{cursor:not-allowed;opacity:.5}
+.nm{font-weight:600}
+.rg{font-size:.85rem;white-space:nowrap}
+.ctl{display:flex;align-items:center;gap:10px;margin-top:10px}
+.ctl input[type=range]{flex:1;min-width:0;accent-color:var(--accent)}
+.ctl input:disabled{opacity:.35}
+.num{width:5.2rem;background:var(--bg);color:var(--text);border:1px solid var(--line);border-radius:6px;padding:6px 8px;font:inherit}
+.unit{color:var(--muted);font-size:.9rem}
+.lock{display:flex;justify-content:space-between;margin-bottom:10px;border-style:dashed}
+.lock span:last-child{color:var(--accent);font-weight:600}
+.primary,.ghost{border-radius:8px;padding:12px 20px;font-weight:600;cursor:pointer;border:1px solid var(--accent)}
+.primary{background:var(--accent);color:var(--ink);margin-top:20px}
+.primary:disabled{background:var(--panel);color:var(--muted);border-color:var(--line);cursor:not-allowed}
+.ghost{background:none;color:var(--accent)}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px}
+.actions .primary{margin-top:0}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+body.result header{margin-bottom:44px}
+.stat:not(.on) .ctl input:not(:disabled){opacity:.7}
+.label{font-size:1.5rem;font-weight:700;margin:0 0 20px}
+.tiles{display:grid;gap:10px;grid-template-columns:1fr}
+.tile{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+.tile .k{color:var(--muted);font-size:.9rem}
+.tile .v{font-size:2rem;font-weight:700;line-height:1.2}
+.tile.big{border-color:var(--accent);background:var(--panel2)}
+.warn{border-color:var(--bad)}
+.warn p{margin:6px 0 0}
+footer{margin-top:36px;font-size:.82rem}
+@media(min-width:700px){.grid{grid-template-columns:repeat(3,1fr)}.stats{grid-template-columns:1fr 1fr}.tiles{grid-template-columns:repeat(3,1fr)}}
+nav.top{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px 16px;max-width:960px;margin:0 auto;padding:14px 20px;border-bottom:1px solid var(--line);position:relative;z-index:1}
+nav.top a{color:#fff;text-decoration:none}
+nav.top .brand{font-weight:700;display:inline-flex;align-items:center;gap:8px}
+nav.top .brand img{border-radius:6px}
+nav.top a:hover{text-decoration:underline}
+nav.top .here{color:var(--muted)}
+section.info{margin-top:44px;padding-top:8px;border-top:1px solid var(--line)}
+section.info h2{margin-top:24px}
+section.info p,section.info li{color:var(--muted)}
+section.info a{color:#fff;text-decoration:underline}
+footer.site{text-align:center;margin-top:44px;padding:20px 16px;border-top:1px solid var(--line);color:var(--muted);font-size:.85rem;position:relative;z-index:1}
+footer.site p{margin:4px 0;color:var(--muted)}
+footer.site a{color:#fff;text-decoration:underline}
+header{text-align:center;padding:20px 0 8px}
+.header-badge{display:inline-block;background:rgba(74,158,255,.12);border:1px solid rgba(74,158,255,.35);color:#4a9eff;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;padding:4px 12px;border-radius:20px;margin-bottom:16px}
+.sub{max-width:520px;margin:0 auto}
+.card,.tile{border-radius:16px}
+.num{font-family:'Space Mono',monospace;font-size:14px}
+.primary{background:linear-gradient(135deg,#2d7dd6,#4a9eff);color:#fff;border:0;box-shadow:0 4px 16px rgba(74,158,255,.25)}
+.primary:disabled{background:var(--panel);color:var(--muted);border:1px solid var(--line);box-shadow:none}
+.ghost{border-color:rgba(74,158,255,.35)}
+nav.top{max-width:760px;padding-left:16px;padding-right:16px}
+
+.field{margin-bottom:14px}.field:last-child{margin-bottom:0}
+.field label{display:block;font-weight:600;margin-bottom:4px}
+.field .hint{margin:4px 0 0}
+.txt{width:100%;background:var(--bg);color:var(--text);border:1px solid var(--line);border-radius:6px;padding:10px 12px;font-family:'Space Mono',monospace;font-size:14px}
+.modes{display:grid;gap:10px;grid-template-columns:1fr 1fr}
+.modes .pass{text-align:center;font-weight:600}
+.items{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(210px,1fr))}
+.item{background:var(--panel);border:1px solid var(--line);border-radius:10px}
+.item.sel{border-color:var(--accent);background:var(--panel2);box-shadow:inset 3px 0 0 var(--accent)}
+.item .pick{display:flex;width:100%;justify-content:space-between;gap:8px;align-items:center;background:none;border:0;padding:12px 14px;cursor:pointer;text-align:left}
+.item .cost{color:var(--accent);font-weight:600;white-space:nowrap}
+.item .step{display:none;align-items:center;gap:8px;padding:0 14px 12px}
+.item.sel.multi .step{display:flex}
+.step button{width:38px;height:38px;flex:none;border-radius:8px;border:1px solid var(--line);background:var(--bg);font-size:1.2rem;cursor:pointer}
+.step .num{flex:1;min-width:0;width:auto;text-align:center;padding:8px 4px}
+.msg{color:var(--bad);margin:14px 0 0;min-height:1.4em}
+.tile.big{grid-column:1/-1}
+.tile .v{word-break:break-word}
+.tile .n{color:var(--muted);font-size:.85rem;margin-top:2px}
+.tiles .tile .v{font-size:1.6rem}
+.tile.big .v{font-size:2.2rem}
+@media(min-width:700px){.tiles{grid-template-columns:repeat(3,1fr)}}
+</style>
+</head>
+<body>
+<nav class="top"><a class="brand" href="/"><img src="/logo.png" alt="" width="24" height="24">BSS Optimizer</a></nav>
+<main>
+<header>
+  <div class="header-badge">🐝 Bee Swarm Simulator</div>
+  <h1>Ticket Calculator</h1>
+  <p class="sub">Find out how many more tickets you need and how much honey they cost.</p>
+</header>
+
+<section id="inputScreen">
+  <h2>Your tickets</h2>
+  <div class="card">
+    <div class="field">
+      <label for="owned">Tickets you have</label>
+      <input class="txt" type="text" id="owned" inputmode="decimal" placeholder="0" autocomplete="off">
+    </div>
+    <div class="field">
+      <label for="price">Price of your next ticket (honey)</label>
+      <input class="txt" type="text" id="price" inputmode="decimal" placeholder="e.g. 100000 or 2.5M" autocomplete="off">
+      <p class="hint">Copy it from the ticket shop. You can type K, M, B, T, Qd or Qn.</p>
+    </div>
+  </div>
+
+  <h2>What do you need?</h2>
+  <div class="modes" id="modes">
+    <button type="button" class="pass" data-m="items" aria-pressed="true">Pick items</button>
+    <button type="button" class="pass" data-m="manual" aria-pressed="false">Enter tickets needed</button>
+  </div>
+
+  <div id="itemsBox">
+    <h2>Event bees</h2>
+    <p class="hint">You can buy one of each. Tap again to deselect.</p>
+    <div class="items" id="onceGrid"></div>
+    <h2>Eggs and items</h2>
+    <p class="hint">Tap to select, then set how many you want. Tap again to deselect.</p>
+    <div class="items" id="multiGrid"></div>
+  </div>
+
+  <div id="manualBox" hidden>
+    <div class="card" style="margin-top:14px">
+      <div class="field">
+        <label for="target">Total tickets you need</label>
+        <input class="txt" type="text" id="target" inputmode="decimal" placeholder="e.g. 5000" autocomplete="off">
+      </div>
+    </div>
+  </div>
+
+  <p class="msg" id="err" role="alert"></p>
+  <button type="button" class="primary" id="go">Calculate</button>
+</section>
+
+<section id="resultScreen" hidden>
+  <div id="resultBody" tabindex="-1"></div>
+  <div class="actions">
+    <button type="button" class="primary" id="again">Calculate again</button>
+    <button type="button" class="ghost" id="edit">Edit my data</button>
+  </div>
+</section>
+
+<section class="info">
+<h2>How the calculator works</h2>
+<p>Enter how many tickets you have and the price of your next ticket from the ticket shop. Then pick the items you want to buy, or type how many tickets you need. The calculator works out how many more tickets you need, then adds up the rising ticket shop prices to give you the honey cost.</p>
+<h2>Good to know</h2>
+<p>The shop only shows a rounded price, so the honey cost is an estimate. The prices come from community data and may change if the game changes. Looking for more help? Try the <a href="/blue-hive-optimizer/">Blue Hive Optimizer</a> or the <a href="/amulet-rater/">Supreme Star Amulet Rater</a>.</p>
+</section>
+</main>
+<footer class="site"><p><a href="/about/">About</a> · <a href="/contact/">Contact</a> · <a href="/privacy/">Privacy Policy</a></p><p>Unofficial fan site. Not affiliated with Onett or Roblox.</p></footer>
+
+<script>
+const ITEMS=[
+ {n:"Tabby Bee Egg",c:500,once:true},{n:"Photon Bee Egg",c:500,once:true},
+ {n:"Festive Bee Egg",c:500,once:true},{n:"Puppy Bee Egg",c:500,once:true},
+ {n:"Cobalt Bee Egg",c:250,once:true},{n:"Crimson Bee Egg",c:250,once:true},
+ {n:"Silver Egg",c:50},{n:"Gold Egg",c:100},{n:"Diamond Egg",c:400},
+ {n:"Mythic Egg",c:2500},{n:"Star Treat",c:1000},{n:"Magic Bean",c:20},
+ {n:"Ant Pass",c:10},{n:"Stinger",c:10}
+];
+const MAXQ=1000000, MAXLOOP=5000000;
+const sel={}; let mode="items";
+const $=s=>document.querySelector(s);
+
+function parseNum(s){
+  s=String(s||"").replace(/[,\s]/g,"").toLowerCase();
+  if(!s) return NaN;
+  const m=s.match(/^(\d*\.?\d+)(k|m|b|t|qd|qn|qa|qi|sx)?$/);
+  if(!m) return NaN;
+  const mult={k:1e3,m:1e6,b:1e9,t:1e12,qd:1e15,qa:1e15,qn:1e18,qi:1e18,sx:1e21}[m[2]]||1;
+  return parseFloat(m[1])*mult;
+}
+function P(n){
+  if(n<=50000) return 1e5+1000*Math.floor(Math.pow(n,n<499?1.2:1.7));
+  return Math.floor(1e11+1e7*Math.pow(n-50000,1.85));
+}
+function fmt(x){
+  if(x<1000) return Math.round(x).toLocaleString("en-US");
+  const t=["","K","M","B","T","Qd","Qn","Sx","Sp"];
+  let i=0,v=x;
+  while(v>=1000&&i<t.length-1){v/=1000;i++}
+  return (v>=100?v.toFixed(1):v.toFixed(2)).replace(/\.?0+$/,"")+t[i];
+}
+function full(x){return x<1e21?Math.round(x).toLocaleString("en-US"):x.toExponential(3)}
+function invert(p){
+  if(p<P(0)) return null;
+  let lo=0,hi=1e8;
+  if(P(hi)<p) return null;
+  while(lo<hi){const mid=Math.floor((lo+hi)/2); if(P(mid)>=p) hi=mid; else lo=mid+1}
+  let n=lo;
+  if(n>0&&Math.abs(P(n-1)-p)<Math.abs(P(n)-p)) n=n-1;
+  return n;
+}
+
+/* item cards */
+function buildCards(){
+  ITEMS.sort((a,b)=>a.c-b.c||a.n.localeCompare(b.n));
+  ITEMS.forEach(it=>{
+    const card=document.createElement("div");
+    card.className="item"+(it.once?"":" multi");
+    card.innerHTML='<button type="button" class="pick" aria-pressed="false"><span>'+it.n+'</span><span class="cost">'+it.c.toLocaleString("en-US")+'</span></button>'+
+      (it.once?'':'<div class="step"><button type="button" aria-label="Decrease '+it.n+'">\u2212</button><input class="num" type="text" inputmode="numeric" value="1" aria-label="Amount of '+it.n+'"><button type="button" aria-label="Increase '+it.n+'">+</button></div>');
+    it.el=card;
+    card.querySelector(".pick").onclick=()=>{
+      if(sel[it.n]) delete sel[it.n]; else sel[it.n]=1;
+      sync(it);clearErr();
+    };
+    if(!it.once){
+      const [minus,plus]=card.querySelectorAll(".step button");
+      const inp=card.querySelector(".step input");
+      minus.onclick=()=>setQty(it,(sel[it.n]||1)-1);
+      plus.onclick=()=>setQty(it,(sel[it.n]||1)+1);
+      inp.oninput=()=>{
+        const d=inp.value.replace(/\D/g,"");
+        if(d==="") return;
+        setQty(it,parseInt(d,10),true);
+      };
+      inp.onblur=()=>{inp.value=sel[it.n]||1};
+    }
+    (it.once?$("#onceGrid"):$("#multiGrid")).appendChild(card);
+  });
+}
+function setQty(it,q,typing){
+  q=Math.max(1,Math.min(MAXQ,q||1));
+  sel[it.n]=q;
+  if(!typing) it.el.querySelector(".step input").value=q;
+  clearErr();
+}
+function sync(it){
+  const on=!!sel[it.n];
+  it.el.classList.toggle("sel",on);
+  it.el.querySelector(".pick").setAttribute("aria-pressed",on);
+  if(!it.once) it.el.querySelector(".step input").value=sel[it.n]||1;
+}
+function clearErr(){$("#err").textContent=""}
+
+/* calculation: returns {err} or the result numbers */
+function compute(){
+  const owned=$("#owned").value.trim()===""?0:parseNum($("#owned").value);
+  if(isNaN(owned)) return {err:"Enter a valid number of tickets you have."};
+  let total;
+  if(mode==="items"){
+    total=0;let any=false;
+    ITEMS.forEach(it=>{if(sel[it.n]){any=true;total+=sel[it.n]*it.c}});
+    if(!any) return {err:"Pick at least one item."};
+  }else{
+    total=parseNum($("#target").value);
+    if(isNaN(total)) return {err:"Enter how many tickets you need."};
+  }
+  const need=Math.max(0,Math.ceil(total-owned));
+  const r={total,owned,need,cost:0,warn:""};
+  if(need===0) return r;
+  const p=parseNum($("#price").value);
+  if(isNaN(p)) return {err:"Enter the price of your next ticket."};
+  const n0=invert(p);
+  if(n0===null) return {err:"That price is outside the shop range. The first ticket costs 100,000 honey."};
+  if(Math.abs(P(n0)-p)/p>0.02) r.warn="That price does not match the shop prices closely. The nearest match is "+fmt(P(n0))+" honey, so check the number you typed.";
+  if(need>MAXLOOP) return {err:"That is too many tickets to calculate (limit "+MAXLOOP.toLocaleString("en-US")+")."};
+  let cost=0;
+  for(let i=0;i<need;i++) cost+=P(n0+i);
+  r.cost=cost;
+  return r;
+}
+
+/* screens */
+function show(res){
+  $("#inputScreen").hidden=res;
+  $("#resultScreen").hidden=!res;
+  window.scrollTo(0,0);
+  if(res) $("#resultBody").focus();
+  if(window.gtag) gtag("event","page_view",{page_title:document.title+(res?" - Results":""),page_location:location.href.split("#")[0]+(res?"#results":"")});
+}
+function showResult(){
+  const r=compute();
+  if(r.err){$("#err").textContent=r.err;return}
+  let h='<p class="label">Your ticket result</p><div class="tiles">'+
+    '<div class="tile"><div class="k">Total ticket cost</div><div class="v">'+full(r.total)+'</div></div>'+
+    '<div class="tile"><div class="k">Tickets you have</div><div class="v">'+full(r.owned)+'</div></div>'+
+    '<div class="tile"><div class="k">More tickets needed</div><div class="v">'+full(r.need)+'</div></div>';
+  if(r.need===0){
+    h+='<div class="tile big"><div class="k">Honey cost</div><div class="v">You have enough tickets</div></div></div>';
+  }else{
+    h+='<div class="tile big"><div class="k">Honey cost for the tickets you need</div><div class="v">About '+fmt(r.cost)+'</div><div class="n">Estimated from the rounded price shown in the shop.</div></div></div>';
+  }
+  if(r.warn) h+='<div class="tile warn" style="margin-top:10px"><p style="margin:0">'+r.warn+'</p></div>';
+  $("#resultBody").innerHTML=h;
+  show(true);
+}
+document.querySelectorAll("#modes .pass").forEach(b=>b.onclick=()=>{
+  mode=b.dataset.m;
+  document.querySelectorAll("#modes .pass").forEach(x=>x.setAttribute("aria-pressed",x===b));
+  $("#itemsBox").hidden=mode!=="items";
+  $("#manualBox").hidden=mode!=="manual";
+  clearErr();
+});
+["#owned","#price","#target"].forEach(s=>$(s).addEventListener("input",clearErr));
+$("#go").onclick=showResult;
+$("#edit").onclick=()=>show(false);
+$("#again").onclick=()=>{
+  ["#owned","#price","#target"].forEach(s=>$(s).value="");
+  Object.keys(sel).forEach(k=>delete sel[k]);
+  ITEMS.forEach(sync);
+  clearErr();show(false);
+};
+buildCards();
+</script>
+</body>
+</html>
