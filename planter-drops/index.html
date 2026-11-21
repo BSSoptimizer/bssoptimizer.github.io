@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bee Swarm Simulator Planter Special Drops Tracker</title>
+<meta name="description" content="Free Bee Swarm Simulator tool: pick your planters, see which special drop materials you can get, and track each cooldown."><link rel="canonical" href="https://bssoptimizer.github.io/planter-drops/"><link rel="icon" type="image/png" href="/logo.png"><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-0EQ60MCZPB"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-0EQ60MCZPB");</script>
+<style>
+:root{--bg:#0a0e1a;--panel:#0f1525;--panel2:#151d35;--line:rgba(74,158,255,0.2);--text:#e8edf8;--muted:#7a8ab0;--accent:#4a9eff;--teal:#38d9c0}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif;font-size:16px;line-height:1.5;min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 80% 50% at 20% 10%,rgba(74,158,255,0.06) 0%,transparent 60%),radial-gradient(ellipse 60% 40% at 80% 80%,rgba(56,217,192,0.04) 0%,transparent 50%);pointer-events:none;z-index:0}
+main{position:relative;z-index:1;max-width:760px;margin:0 auto;padding:28px 16px 48px}
+h1{font-size:clamp(28px,5vw,42px);font-weight:800;line-height:1.1;margin:0 0 12px;background:linear-gradient(135deg,#e8edf8 0%,#4a9eff 50%,#38d9c0 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+h2{font-size:1.1rem;margin:28px 0 4px}
+header{text-align:center;padding:20px 0 8px}
+.header-badge{display:inline-block;background:rgba(74,158,255,.12);border:1px solid rgba(74,158,255,.35);color:#4a9eff;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;padding:4px 12px;border-radius:20px;margin-bottom:16px}
+.sub,.hint,.muted{color:var(--muted)}
+.sub{max-width:520px;margin:0 auto}
+.hint{margin:0 0 12px;font-size:.92rem}
+button{font:inherit;color:inherit}
+.grid{display:grid;gap:10px;grid-template-columns:1fr 1fr}
+.pass,.mat{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:12px 14px;cursor:pointer;text-align:left}
+.pass[aria-pressed=true]{border-color:var(--accent);background:var(--panel2);box-shadow:inset 3px 0 0 var(--accent)}
+.mat{display:flex;justify-content:space-between;align-items:baseline;gap:8px;width:100%;margin-bottom:10px}
+.mat:hover{border-color:var(--accent)}
+.nm{font-weight:600}
+.rg{color:var(--muted);font-size:.85rem}
+.ok{color:var(--teal);font-weight:600}
+.primary,.ghost,.small{border-radius:8px;cursor:pointer;font-weight:600;border:1px solid rgba(74,158,255,.35)}
+.primary{padding:12px 20px;background:linear-gradient(135deg,#2d7dd6,#4a9eff);color:#fff;border:0;box-shadow:0 4px 16px rgba(74,158,255,.25)}
+.primary:disabled{background:var(--panel);color:var(--muted);border:1px solid var(--line);box-shadow:none;cursor:not-allowed}
+.ghost{padding:12px 20px;background:none;color:var(--accent)}
+.small{padding:6px 12px;background:none;color:var(--accent);white-space:nowrap}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}
+.row{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:12px 14px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;gap:12px}
+.row.done{opacity:.6;border-style:dashed}
+.row.done .nm,.row.done .fl{text-decoration:line-through}
+.fl{color:var(--muted);font-size:.9rem}
+.time{font-family:'Space Mono',monospace;font-size:13px;color:var(--accent)}
+.side{text-align:right;display:flex;flex-direction:column;align-items:flex-end;gap:4px}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+@media(min-width:700px){.grid{grid-template-columns:repeat(3,1fr)}}
+nav.top{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px 16px;max-width:760px;margin:0 auto;padding:14px 16px;border-bottom:1px solid var(--line);position:relative;z-index:1}
+nav.top a{color:#fff;text-decoration:none}
+nav.top .brand{font-weight:700;display:inline-flex;align-items:center;gap:8px}
+nav.top .brand img{border-radius:6px}
+nav.top a:hover{text-decoration:underline}
+section.info{margin-top:44px;padding-top:8px;border-top:1px solid var(--line)}
+section.info p,section.info li{color:var(--muted)}
+section.info a,footer.site a{color:#fff;text-decoration:underline}
+footer.site{text-align:center;margin-top:44px;padding:20px 16px;border-top:1px solid var(--line);color:var(--muted);font-size:.85rem;position:relative;z-index:1}
+footer.site p{margin:4px 0}
+</style>
+</head>
+<body>
+<nav class="top"><a class="brand" href="/"><img src="/logo.png" alt="" width="24" height="24">BSS Optimizer</a></nav>
+<main>
+<header>
+  <div class="header-badge">🐝 Bee Swarm Simulator</div>
+  <h1>Planter Special Drops Tracker</h1>
+  <p class="sub">Pick your planters, see which materials you can earn, and track every cooldown.</p>
+</header>
+
+<section id="vPlanters">
+  <h2>Your planters</h2>
+  <p class="hint" id="pHint"></p>
+  <div class="grid" id="planters"></div>
+  <div class="actions"><button type="button" class="primary" id="toMats" disabled>Show my materials</button></div>
+</section>
+
+<section id="vMats" hidden>
+  <h2>Materials</h2>
+  <p class="hint">Tap a material to see which planters and fields give it.</p>
+  <div id="mats"></div>
+  <div class="actions"><button type="button" class="ghost" id="editP">Edit my planters</button></div>
+</section>
+
+<section id="vDetail" hidden>
+  <h2 id="dTitle"></h2>
+  <p class="hint" id="dHint"></p>
+  <div id="rows"></div>
+  <div class="actions"><button type="button" class="ghost" id="back">Back to materials</button></div>
+</section>
+
+<section class="info">
+<h2>How it works</h2>
+<p>Some planters give a guaranteed special drop when you harvest them fully grown in a certain field, then the drop goes on cooldown. Select the planters you own and this tool lists every special drop you could collect, grouped by material. Mark a drop as collected and it is crossed off with a countdown until you can earn it again. Some drops need a chain: harvest the same planter in each listed field in order.</p>
+<p>Your planters and timers are saved in this browser only, so they stay on your device. Clearing your browser data will erase them.</p>
+<h2>Good to know</h2>
+<p>Drops and cooldowns come from the community wiki and player testing and may be incomplete or out of date, and drops with an unknown cooldown are left out. Drops with no cooldown are always shown as ready. Planters grow in real playtime, and you can only have 3 planters active at once. Looking for more help with your hive? Try the <a href="/blue-hive-optimizer/">Blue Hive Optimizer</a>.</p>
+</section>
+</main>
+<footer class="site"><p><a href="/about/">About</a> · <a href="/contact/">Contact</a> · <a href="/privacy/">Privacy Policy</a></p><p>Unofficial fan site. Not affiliated with Onett or Roblox.</p></footer>
+
+<script>
+// [planter, item, quantity, fields in order (use "xN" suffix for repeats), cooldown in days]
+const DROPS = [
+ ["Plastic Planter","Swirled Wax","1",["Coconut Field"],30],
+ ["Plastic Planter","Caustic Wax","1",["Rose Field"],30],
+ ["Candy Planter","Glue","10",["Stump Field","Stump Field","Stump Field"],7],
+ ["Candy Planter","Swirled Wax","1",["Cactus Field"],30],
+ ["Candy Planter","Caustic Wax","1",["Mountain Top Field"],30],
+ ["Red Clay Planter","Stingers","10",["Clover Field","Spider Field","Cactus Field"],14],
+ ["Red Clay Planter","Swirled Wax","1",["Sunflower Field"],30],
+ ["Red Clay Planter","Caustic Wax","1",["Clover Field"],30],
+ ["Red Clay Planter","Swirled Wax","1",["Pine Tree Forest"],7],
+ ["Blue Clay Planter","Swirled Wax","1",["Spider Field"],30],
+ ["Blue Clay Planter","Caustic Wax","1",["Clover Field"],30],
+ ["Blue Clay Planter","Micro-Converters","10-15",["Spider Field"],0],
+ ["Tacky Planter","Loaded Dice","1",["Mountain Top Field"],30],
+ ["Tacky Planter","Swirled Wax","1",["Pumpkin Patch"],30],
+ ["Tacky Planter","Caustic Wax","1",["Bamboo Field"],30],
+ ["Pesticide Planter","Bitterberries","100",["Strawberry Field"],30],
+ ["Pesticide Planter","Neonberries","25+",["Stump Field","Mountain Top Field","Coconut Field"],7],
+ ["Pesticide Planter","Swirled Wax","1",["Strawberry Field"],30],
+ ["Petal Planter","Swirled Wax","1",["Strawberry Field"],30],
+ ["Petal Planter","Caustic Wax","1",["Dandelion Field"],30],
+ ["Heat-Treated Planter","Red Extract","100",["Mushroom Field","Strawberry Field","Rose Field","Pepper Patch"],30],
+ ["Heat-Treated Planter","Enzymes","100",["Pineapple Patch","Pineapple Patch","Pineapple Patch"],30],
+ ["Heat-Treated Planter","Loaded Dice","1",["Mushroom Field"],1],
+ ["Heat-Treated Planter","Swirled Wax","1",["Blue Flower Field"],30],
+ ["Heat-Treated Planter","Caustic Wax","1",["Coconut Field"],30],
+ ["Heat-Treated Planter","Stingers","10",["Cactus Field"],0],
+ ["Hydroponic Planter","Blue Extract","100",["Blue Flower Field","Bamboo Field","Pine Tree Forest","Stump Field"],30],
+ ["Hydroponic Planter","Oil","100",["Sunflower Field","Sunflower Field","Sunflower Field"],30],
+ ["Hydroponic Planter","Loaded Dice","1",["Blue Flower Field"],1],
+ ["Hydroponic Planter","Swirled Wax","1",["Mushroom Field"],30],
+ ["Hydroponic Planter","Caustic Wax","1",["Coconut Field"],30],
+ ["The Planter Of Plenty","Super Smoothie","10",["Bamboo Field"],30]
+].map((d,i)=>({id:"d"+i,planter:d[0],item:d[1],qty:d[2],fields:d[3],days:d[4]}));
+const PLANTERS = [...new Set(DROPS.map(d=>d.planter))];
+const KEY = "bssPlanterDrops";
+// In-game colors (edit freely)
+const PCOL = {"Plastic Planter":"#ffe14d","Candy Planter":"#e08ae0","Red Clay Planter":"#e0664f","Blue Clay Planter":"#5fa8ff","Tacky Planter":"#ffd166","Pesticide Planter":"#7ddc6e","Petal Planter":"#f2f4f8","Heat-Treated Planter":"#ff8a3d","Hydroponic Planter":"#38c8ff","The Planter Of Plenty":"#f2d35a"};
+const ICOL = {"Swirled Wax":"#ffd84a","Caustic Wax":"#8fe35c","Stingers":"#c9cdd6","Glue":"#bfe3ff","Loaded Dice":"#ff5f5f","Bitterberries":"#f0e2b0","Neonberries":"#3fb34f","Red Extract":"#ff6b6b","Blue Extract":"#4a9eff","Enzymes":"#fff3a0","Oil":"#e0b84a","Micro-Converters":"#9aa7bd","Super Smoothie":"#4fd35f"};
+const pc = n => '<span style="color:'+(PCOL[n]||"inherit")+'">'+esc(n)+'</span>';
+const ic = n => '<span style="color:'+(ICOL[n]||"inherit")+'">'+esc(n)+'</span>';
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+let st = {owned:[],collected:{}}, cur = null;
+try { const r = JSON.parse(localStorage.getItem(KEY)); if (r && Array.isArray(r.owned) && r.collected) st = r; } catch(e) {}
+const save = () => { try { localStorage.setItem(KEY, JSON.stringify(st)); } catch(e) {} };
+const rng = d => { const m = d.qty.match(/^(\d+)(?:-(\d+))?\+?$/); return [+m[1], +(m[2]||m[1])]; };
+const sum = list => { let lo = 0, hi = 0; list.forEach(d => { const r = rng(d); lo += r[0]; hi += r[1]; });
+  return (lo === hi ? lo : lo+"-"+hi) + (list.some(d => /\+$/.test(d.qty)) ? "+" : ""); };
+const readyAt = d => st.collected[d.id] ? st.collected[d.id] + d.days*864e5 : 0;
+const isReady = d => readyAt(d) <= Date.now();
+const mine = () => DROPS.filter(d => st.owned.includes(d.planter));
+function fmt(ms){
+  const s = Math.max(0, Math.ceil(ms/1000)), dd = Math.floor(s/86400), h = Math.floor(s%86400/3600), m = Math.floor(s%3600/60), x = s%60;
+  return (dd ? dd+"d " : "") + String(h).padStart(2,"0")+"h "+String(m).padStart(2,"0")+"m "+String(x).padStart(2,"0")+"s";
+}
+function fieldText(d){
+  const f = d.fields, out = [];
+  for (let i=0;i<f.length;i++){ if (i && f[i]===f[i-1]) continue; const n = f.filter(x=>x===f[i]).length; out.push(f[i] + (n>1 ? " ×"+n : "")); }
+  return out.join(" → ");
+}
+function view(v){
+  ["vPlanters","vMats","vDetail"].forEach(id => $("#"+id).hidden = id !== v);
+  window.scrollTo(0,0);
+}
+// Planters screen
+PLANTERS.forEach(p => {
+  const b = document.createElement("button");
+  b.type="button"; b.className="pass"; b.innerHTML=pc(p); b.dataset.p=p; b.setAttribute("aria-pressed","false");
+  b.onclick = () => { const i = st.owned.indexOf(p); if (i>=0) st.owned.splice(i,1); else st.owned.push(p); save(); syncP(); };
+  $("#planters").appendChild(b);
+});
+function syncP(){
+  document.querySelectorAll(".pass").forEach(b => b.setAttribute("aria-pressed", st.owned.includes(b.dataset.p)));
+  const n = st.owned.length;
+  $("#pHint").textContent = n ? "Selected "+n+" of "+PLANTERS.length+". Tap again to deselect." : "Tap every planter you own.";
+  $("#toMats").disabled = !n;
+}
+// Materials screen
+function showMats(){
+  const g = {};
+  mine().forEach(d => { (g[d.item] = g[d.item] || []).push(d); });
+  const html = Object.keys(g).sort().map(k => {
+    const rd = g[k].filter(isReady), cd = g[k].filter(d=>!isReady(d));
+    return '<button type="button" class="mat" data-i="'+esc(k)+'"><span class="nm">'+ic(k)+' - '+sum(g[k])+'</span><span class="rg"><span class="ok">'+sum(rd)+' ready</span> · '+sum(cd)+' on cooldown</span></button>';
+  }).join("");
+  $("#mats").innerHTML = html || '<p class="muted">None of your planters have tracked special drops yet.</p>';
+  $("#mats").querySelectorAll(".mat").forEach(b => b.onclick = () => { cur = b.dataset.i; showDetail(); });
+  cur = null; view("vMats");
+}
+// Detail screen
+function showDetail(){
+  const list = mine().filter(d => d.item === cur).sort((a,b) => (readyAt(a)-readyAt(b)) || a.planter.localeCompare(b.planter));
+  $("#dTitle").innerHTML = ic(cur) + " - " + sum(list) + " possible";
+  $("#dHint").textContent = "Harvest the planter fully grown in the field shown, then tap Collected to start its cooldown.";
+  $("#rows").innerHTML = list.map(d => {
+    const done = !isReady(d);
+    return '<div class="row'+(done?' done':'')+'"><div><div class="nm">'+pc(d.planter)+'</div><div class="fl">'+esc(fieldText(d))+(d.fields.length>1?' (in order)':'')+'</div><div class="fl">'+esc(d.qty)+' '+ic(d.item)+' · '+(d.days ? d.days+'-day cooldown' : 'no cooldown')+'</div></div><div class="side">'+
+      (done ? '<span class="time" data-until="'+readyAt(d)+'"></span><button type="button" class="small" data-undo="'+d.id+'">Undo</button>'
+            : '<span class="ok">Ready</span>'+(d.days ? '<button type="button" class="small" data-got="'+d.id+'">Collected</button>' : ''))+'</div></div>';
+  }).join("");
+  $("#rows").querySelectorAll("[data-got]").forEach(b => b.onclick = () => { st.collected[b.dataset.got] = Date.now(); save(); showDetail(); });
+  $("#rows").querySelectorAll("[data-undo]").forEach(b => b.onclick = () => { delete st.collected[b.dataset.undo]; save(); showDetail(); });
+  tick(); view("vDetail");
+}
+function tick(){
+  let expired = false;
+  document.querySelectorAll("[data-until]").forEach(e => {
+    const left = +e.dataset.until - Date.now();
+    if (left <= 0) expired = true; else e.textContent = fmt(left);
+  });
+  if (expired && cur && !$("#vDetail").hidden) showDetail();
+}
+setInterval(tick, 1000);
+$("#toMats").onclick = showMats;
+$("#editP").onclick = () => view("vPlanters");
+$("#back").onclick = showMats;
+syncP();
+if (st.owned.length) showMats();
+</script>
+</body>
+</html>
