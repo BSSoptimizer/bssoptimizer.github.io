@@ -34,3 +34,4 @@ section.info a{color:#fff;text-decoration:underline}
 footer.site{text-align:center;margin-top:44px;padding:20px 16px;border-top:1px solid var(--line);color:var(--muted);font-size:.85rem;position:relative;z-index:1}
 footer.site p{margin:4px 0;color:var(--muted)}
 footer.site a{color:#fff;text-decoration:underline}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
