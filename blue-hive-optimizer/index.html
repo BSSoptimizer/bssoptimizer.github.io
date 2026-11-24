@@ -3,10 +3,11 @@
 <head>
 <link rel="canonical" href="https://bssoptimizer.github.io/blue-hive-optimizer/">
 <link rel="icon" type="image/png" href="/logo.png">
-<meta property="og:title" content="Bee Swarm Simulator Blue Hive Optimizer">
+<meta property="og:title" content="Bee Swarm Simulator Blue Hive Optimizer (Free)">
 <meta property="og:description" content="Optimize your Blue Hive build in Bee Swarm Simulator.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://bssoptimizer.github.io/blue-hive-optimizer/">
+<meta property="og:site_name" content="BSS Optimizer"><meta property="og:image" content="https://bssoptimizer.github.io/logo.png"><meta name="twitter:card" content="summary">
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-0EQ60MCZPB"></script>
 <script>
@@ -18,10 +19,10 @@
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BSS Blue Hive Optimizer – Bee Swarm Simulator Hive Advisor</title>
+<title>Bee Swarm Simulator Blue Hive Optimizer (Free)</title>
 <meta name="description" content="Free BSS Blue Hive Optimizer for Bee Swarm Simulator. Get personalized, stage-specific advice to maximize your blue hive honey production.">
 <meta name="keywords" content="Bee Swarm Simulator, Blue Hive, Bee Swarm Optimizer, Bee Swarm Blue Hive Optimizer, Roblox Bee Swarm">
-<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -1212,6 +1213,7 @@ function analyze() {
   }
   const goals = buildNextGoals(bees, stage, hiveLevel, hiveSlots, ssaHas);
 
+  if(window.gtag) gtag("event","tool_complete",{tool_name:"blue_hive_optimizer",stage:stage});
   renderResults(stage, hiveLevel, sections, goals);
 }
 

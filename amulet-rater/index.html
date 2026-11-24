@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Bee Swarm Simulator Supreme Star Amulet Rater - Blue Hive</title>
-<meta name="description" content="Free Bee Swarm Simulator tool: enter your Supreme Star Amulet passives and stats to score it for a blue hive."><link rel="canonical" href="https://bssoptimizer.github.io/amulet-rater/"><link rel="icon" type="image/png" href="/logo.png"><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<title>Bee Swarm Simulator Supreme Star Amulet Rater – Blue Hive</title>
+<meta name="description" content="Free Bee Swarm Simulator tool: enter your Supreme Star Amulet passives and stats to score it for a blue hive."><link rel="canonical" href="https://bssoptimizer.github.io/amulet-rater/"><link rel="icon" type="image/png" href="/logo.png"><meta property="og:title" content="Bee Swarm Simulator Supreme Star Amulet Rater – Blue Hive"><meta property="og:description" content="Free Bee Swarm Simulator tool: enter your Supreme Star Amulet passives and stats to score it for a blue hive."><meta property="og:type" content="website"><meta property="og:url" content="https://bssoptimizer.github.io/amulet-rater/"><meta property="og:site_name" content="BSS Optimizer"><meta property="og:image" content="https://bssoptimizer.github.io/logo.png"><meta name="twitter:card" content="summary"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-0EQ60MCZPB"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag("js",new Date());gtag("config","G-0EQ60MCZPB");</script>
 <style>
 :root{--bg:#0a0e1a;--panel:#0f1525;--panel2:#151d35;--line:rgba(74,158,255,0.2);--text:#e8edf8;--muted:#7a8ab0;--accent:#4a9eff;--ink:#fff;--bad:#ff4d6d}
@@ -281,6 +281,7 @@ function rate() {
 // ---- Screens ----
 function showResult() {
   const r = rate(), body = $("#resultBody");
+  if(window.gtag) gtag("event","tool_complete",{tool_name:"amulet_rater",rated:!!r});
   if (!r) {
     body.innerHTML = '<div class="tile warn"><h2 style="margin-top:0">No rating</h2><p>A Pop Star is required for an amulet to count for a blue hive. Keep rolling until you get one.</p></div>';
   } else {
